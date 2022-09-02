@@ -1,0 +1,88 @@
+---
+title: "Tarea Clase 01 Septiembre"
+description: |
+  Graficos
+author:
+  - name: Diogo Polónia
+    url: https://example.com/norajones
+    affiliation: Spacely Sprockets
+    affiliation_url: https://example.com/spacelysprokets
+date: 09-01-2022
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+## Tarea
+
+Una de las formas de aprender a usar R, es simplemente aprender a buscar lo que necesitamos usar. Algunos de las funciones las hemos visto en clases, pero siempre pueden buscar otras formas de lograr los mismos resultados.
+
+Con los materiales que hemos visto, vamos a realizar gráficos exploratorios:
+
+Libraries:
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+Carga de bases de datos:
+
+```{r}
+vdem <- readRDS("../../_clases/vdem.rds")
+
+vdem_subset <- vdem %>% 
+  select(country_name, v2x_partipdem, 
+         v2x_cspart, v2elmulpar, v2psprlnks, e_peedgini, 
+         e_regionpol, e_gdppc, e_pop) %>% 
+  group_by(country_name) %>% 
+  summarise_all(function(x)  mean(x, na.rm = T))
+```
+
+### Histograma
+
+```{r}
+vdem_subset %>% 
+  ggplot(aes(x = v2x_cspart, na.rm = T)) +
+  geom_histogram(binwidth = 0.05) +
+  theme_minimal(base_family = "Arial") +
+  labs(x = "Participación de las personas en OSC [0-1] ", y = "Frecuencia",
+       title = "Distribución de la variable dependiente",
+       caption = "Fuente: Varieties of Democracy")
+```
+
+### Gráfico de barras
+
+```{r}
+vdem_subset %>% 
+  ggplot(aes(x=factor(e_regionpol)))+
+  geom_bar( color="cadetblue", fill="steelblue", alpha = 0.5) +
+  theme_minimal() +
+  labs(x = "Clasificacion Politica", y = "Frecuencia",
+       title = "Paises por Clasificacion Politica",
+       caption = "Fuente: Varieties of Democracy")
+```
+
+### Boxplot
+
+```{r}
+vdem_subset %>% 
+  ggplot(aes(x=factor(e_regionpol), y = e_peedgini	))+
+  geom_boxplot( color="cadetblue", fill="steelblue", alpha = 0.5) +
+  theme_minimal() +
+  labs(x = "Clasificacion Politica", y = "Inequidad Educacional",
+       title = "Distribuicion de Inequidad Educacional por Clasificacion Politica",
+       caption = "Fuente: Varieties of Democracy")
+```
+
+### Scatterplot
+
+```{r}
+vdem_subset %>% 
+  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +
+  geom_point() +
+  labs(x = "Coeficiente de Gini de desiguadad educaciona", y = "Participación") +
+  theme_minimal(base_family = "Arial") +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18))
+```
+

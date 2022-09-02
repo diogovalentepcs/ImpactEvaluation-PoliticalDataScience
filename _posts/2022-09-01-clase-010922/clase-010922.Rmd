@@ -1,0 +1,518 @@
+---
+title: "Clase 01/09/22 - Modelos lineales"
+subtitle: "Medición y análisis dimensional de datos políticos <br> ICP5006"
+author: "Soledad Araya"
+institute: "Instituto de Ciencia Política <br> Pontifia Universidad Católica de Chile"
+date: "(updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: ["xaringan-themer.css", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+library(tidyverse)
+style_mono_accent(
+  base_color = "#5ca4a9",
+  colors = c(
+    aguac = "#9bc1bc",
+    aguao = "#5ca4a9",
+    gris = "#e6ebe0",
+    crema = "#f4f1bb",
+    naranjo = "#ed6a5a"
+  ),
+  header_font_google = google_font("Josefin Sans"),
+  text_font_google   = google_font("Arial", "400", "400i"),
+  code_font_google   = google_font("Fira Mono")
+)
+
+tema <- theme_set(theme_minimal(base_family = "Arial") +
+                    theme(axis.text = element_text(size = 15),
+                          axis.title = element_text(size = 18),
+                          plot.title = element_text(size = 20),
+                          plot.caption = element_text(size = 16)))
+```
+
+---
+
+# Regresión Lineal Simple
+
+Ya vimos tres formas diferentes de probar hipótesis como lo son los test de medias, test de proporciones y las correlaciones. Ahora, añadiremos una cuarta forma de hacer este tipo de prueba: **la regresión lineal simple**. Este es un paso anterior antes de estudiar los modelos de regresión múltiple. Para la siguiente sección, utilizaremos la base de datos de *Varieties of Democracy* que es un proyecto que toma un enfoque comprensivo para entender el fenómeno de la democratización. Al tener muchas variables, sólo seleccionaremos algunas con las cuales trabajaremos:
+
+```{r message=F, warning=F, results = 'hide'}
+library(tidyverse)
+library(sjmisc)
+library(kableExtra)
+
+vdem <- readRDS("../../_clases/vdem.rds")
+
+vdem_subset <- vdem %>% 
+  select(country_name, v2x_partipdem, 
+         v2x_cspart, v2elmulpar, v2psprlnks, e_peedgini, 
+         e_regionpol, e_gdppc, e_pop) %>% 
+  group_by(country_name) %>% 
+  summarise_all(function(x)  mean(x, na.rm = T))
+```
+
+Pero, ¿qué representa cada una de estas variables?
+
+---
+
+## V-Dem Codebook:
+
+```{r echo=F}
+# options(knitr.kable.NA = '')
+# 
+# readxl::read_excel("tablas.xlsx") %>% 
+#   knitr::kable(., align = 'l') %>% 
+#   kable_styling(bootstrap_options = c("striped"), 
+#                 html_font = 'Roboto Condensed') %>% 
+#   column_spec(1, width_min = "2cm", bold = T) %>% 
+#   column_spec(2, width_min = "3cm", border_left = T) %>% 
+#   column_spec(3:4, width_min = "4cm", border_left = T) %>% 
+#   row_spec(seq(1, 27, 2), background = "#9bc1bc") %>%
+#   row_spec(seq(2, 28, 2), background = "##5ca4a9") %>%
+#   #collapse_rows(columns = 1:4, valign = 'top') %>% 
+#   scroll_box(width = "100%", height = "500px")
+```
+
+---
+
+class: middle
+
+## Concepto básico
+
+La idea básica de una regresión bivariada es que estamos tratando de ajustar el modelo a la mejor línea que atraviesa el gráfico de dispersión. Esta línea, que se caracteriza por su pendiente y el intercepto $y$, sirve como un **modelo estadístico** de la realidad. En este sentido, es muy diferente a las pruebas de hipótesis que vimos anteriormente. Observa la siguiente fórmula:
+
+$$Y = mX + b$$
+donde $b$ es el intercepto y y $m$ es la pendiente. Por el incremento en una unidad de $X$, $m$ representa el aumento (o la baja) correspondiente de la cantidad de $Y$. En conjunto, estas dos líneas son descritas como los *parámetros*. En una regresión bivariada, representamos el intercepto $y$ con la letra griega alpha $\alpha$ y la pendiente con la letra beta $\beta$. Como ya habíamos señalado, Y es la VD y X es la VI. Esto lo expresamos de la siguiente manera:
+
+$$Y_i = \alpha + \beta X_i + u_i$$
+
+---
+
+class: middle
+
+El componente $u$, esto corresponde al componente "aleatorio" de nuestra VD. *Consideramos esto porque no esperamos que todos los puntos se ajusten perfectamente en una línea recta*. Después de todo, estamos tratando de explicar procesos o fenómenos sociales.
+
+Pero nosotros no solemos tener la población, sino que trabajamos con una muestra de los datos que nos son útiles para hacer inferencias sobre la población de interés. Para distinguirlo de la anterior, usamos los sombreros sobre los parámetros:
+
+$$Y_i = \hat\alpha + \hat\beta X_i + \hat u_i$$
+## Residuales
+
+$$\hat u_i = Y_i - \hat Y_i$$
+
+Como vimos anteriormente, siempre hay un componente aleatorio dentro de la regresión. En la fórmula que vemos arriba, es posible ver que este "componente aleatorio" es igual a la diferencia entre el valor verdadero de la VD y los valores predichos de la VD en nuestro modelo de regresión. Otro nombre que se usa para este componente es **residuos**. También lo podemos encontrar como el **error de la muestra**.
+
+---
+
+class: middle
+
+## Análisis descriptivo de los datos
+
+Lo primero que debemos hacer es ver la distribución de nuestros datos, esto lo podemos hacer con `skimr::skim()`.
+
+```{r eval=F}
+skimr::skim(vdem_subset)
+```
+
+Como ya habíamos visto, este comando es muy útil porque nos muestra el tipo de variables que compone la base de datos, el número de *missings* o valores perdidos, su media, su desviación estándar, los percentiles y un pequeño histograma que nos muestra la distribución de los datos dentro de cada una de las variables.
+
+Esta función sólo nos entrega estadísticos de resumen para una variable, sin embargo, también existen estadísticos de resumen bivariados. Cuando dos variables son numéricas se puede calcular el **coeficiente de correlación**.
+
+>El *coeficiente de correlació*n es una expresión cuantitativa de la fuerza de la relación lineal entre dos variables numéricas (métricas). Va de los rangos -1 a 1, donde -1 indica una relación negativa perfecta, 0 indica que no existe relación y 1 indica que existe una relación positiva perfecta entre las variables.
+
+---
+
+class: middle
+
+## Resumen de datos univariados con `skimr`
+
+En este caso particular, sólo queremos obtener la información de las *variables numéricas*:
+
+```{r message=F, results='hide'}
+library(skimr)
+
+skim(vdem_subset) %>% 
+  yank("numeric")
+```
+
+```{r}
+# ── Variable type: numeric ─────────────────────────────────────────────────────────────────────────
+#   skim_variable n_missing complete_rate      mean       sd       p0      p25      p50      p75
+# 1 v2x_partipdem         7         0.965    0.160     0.133  0.00805   0.0647   0.121     0.205
+# 2 v2x_cspart            3         0.985    0.376     0.199  0.0342    0.229    0.333     0.508
+# 3 v2elmulpar            7         0.965   -0.181     1.07  -3.09     -0.949   -0.0749    0.826
+# 4 v2psprlnks            4         0.980   -0.0121    1.17  -2.53     -0.934   -0.117     0.738
+# 5 e_peedgini           67         0.668   48.2      23.9    7.62     24.1     49.4      68.0  
+# 6 e_regionpol           0         1        4.07      2.18   1         2.25     4         5    
+# 7 e_gdppc              11         0.946    7.00     10.2    0.714     1.95     3.58      9.18 
+# 8 e_pop                11         0.946 1830.     5936.     7.10    219.     584.     1236.  
+```
+
+Los resultados de `skim` pueden ser almacenados como una base de datos.
+
+---
+
+class: middle
+
+## Correlación
+
+En segundo lugar, resulta importante que veamos cómo se relacionan las variables entre sí. Para eso, utilizaremos el comando `ggcorrplot()` del paquete con el mismo nombre, con la que podremos evaluar la correlación de *Pearson* entre todas las variables. Recuerden que si no tienen el paquete, deben instalarlo previamente con `install.packages("ggcorrplot")`. Antes de realizar el gráfico, debemos **calcular la correlación entre nuestras variables y guardarlas en un tibble diferente**. En este caso, será `corr_vdem`.
+
+```{r eval = F}
+library(ggcorrplot)
+
+colnames(vdem_subset)
+
+corr_vdem <- vdem_subset %>% 
+  select(2:6, 8) %>% 
+  cor(use = "pairwise") %>% 
+  round(1)
+
+ggcorrplot(corr_vdem, type = "lower", lab = T, show.legend = F)
+```
+
+Por otro lado, en el caso de que sea necesario, siempre es posible ver los valores que nos entregó la función en un principio. `round()` nos sirve para redondear las cifras, lo que puede ser modificado según las necesidades de cada uno. Pero siempre es bueno decir que **no es la única forma de calcular correlaciones en R**.
+
+---
+
+class: center, middle
+
+```{r echo=F, warning=F, message=F, out.height="70%", out.width="80%"}
+library(ggcorrplot)
+
+corr_vdem <- vdem_subset %>% 
+  select(2:6, 8) %>% 
+  cor(use = "pairwise") %>% 
+  round(1)
+
+ggcorrplot(corr_vdem, type = "lower", lab = T, show.legend = F)
+```
+
+---
+
+Este paso es importante porque queremos evitar tener **multicolinealidad perfecta** (que haya VI que estén perfectamente correlacionadas), que es uno de los supuestos centrales del MCO. Por eso, no es de extrañar la alta correlación entre `v2x_partipdem` y `v2x_cspart` ya que ambas miden la participación de los ciudadanos, y la segunda está contenida en la primera.
+
+Pero, ¿por qué es importante conocer nuestras variables? Antes de estimar un modelo lineal con mínimos cuadrados ordinarios (MCO) se recomienda prestar atención a los siguientes puntos:
+
+1. Variación en $x$.
+2. Variación n $y$.
+3. Unidad de medidas de las variables.
+4. Tipo de variables. En los modelos MCO la variable dependiente debe ser, en general, continua.
+5. Identificar los valores perdidos.
+
+>En clases posteriores, veremos cómo lidiar con los *missings* de nuestras bases de datos. Para esto, ya debemos tener la base de dato con la que trabajaremos en nuestros proyectos personales.
+
+---
+
+## Distribución de VD
+
+Para el siguiente ejemplo, `e_peedgini` y `v2x_cspart` serán nuestras variables de interés. Podemos suponer que nos interesa estimar cómo varían los niveles de la participación de las personas en organizaciones de la sociedad civil (en un intervalo de 0 a 1, de bajo a alto). En este caso, nuestra VI será el *índice Gini de desigualdad educativa*, mientras que la VD será *la participación en OSC*.
+
+---
+
+class: middle
+
+### Primero, observaremos cómo se distribuye nuestra VD:
+
+.left-code[
+
+```{r des-par, eval = F}
+vdem_subset %>% 
+  ggplot(aes(x = v2x_cspart, na.rm = T)) +
+  geom_histogram(binwidth = 0.05) +
+  theme_minimal(base_family = "Arial") +
+  labs(x = "Participación de las personas en OSC [0-1] ", y = "Frecuencia",
+       title = "Distribución de la variable dependiente",
+       caption = "Fuente: Varieties of Democracy") 
+```
+
+]
+
+.right-plot[
+
+```{r des-par-out, ref.label="des-par", echo=FALSE, warning=F}
+
+```
+
+]
+
+---
+
+class: center, middle
+
+### Distribución de VI
+
+Ahora, observaremos cómo se distribuye la variable independiente:
+
+.left-code[
+
+```{r gini, eval = F}
+vdem_subset %>% 
+  ggplot(aes(x = e_peedgini, na.rm = T)) +
+  geom_histogram(binwidth = 2.5) +
+  theme_minimal(base_family = "Arial") +
+  labs(x = "Coeficiente de Gini de desiguadad educaciona", y = "Frecuencia",
+       title = "Distribución de la variable independiente",
+       caption = "Fuente: Varieties of Democracy") 
+```
+]
+
+.right-plot[
+
+```{r gini-out, ref.label="gini", echo=FALSE, warning=F}
+
+```
+
+]
+
+---
+
+class: center, middle
+
+## Relación entre la VD y VI
+
+Para el siguiente gráfico, utilizaremos `e_peedgini` y `v2x_cspart`. Lo graficaremos utilizando un gráfico de dispersión.
+
+.left-code[
+
+```{r scatterplot, eval=F}
+vdem_subset %>% 
+  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +
+  geom_point() +
+  theme_minimal(base_family = "Arial") +
+  labs(x = "Coeficiente de Gini de desiguadad educaciona", y = "Participación") +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18))
+```
+
+]
+
+.right-plot[
+
+```{r scatterplot-out, ref.label="scatterplot", echo=F, warning=F, message=F}
+```
+
+]
+
+---
+
+class: center, middle
+
+## Relación entre VD y VI
+
+```{r warning=F, echo=F, message=F, out.width="80%", out.height="80%"}
+vdem_subset %>%
+  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = T, color = "#ed6a5a") +
+  labs(x = "Coeficiente de Gini de desiguadad educacional", y = "Participación") +
+  theme_minimal(base_family = "Arial") +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18))
+```
+
+---
+
+class: center, middle
+
+Una primera visualización nos permite observar si hay algún tipo de relación. Aquí vemos una relación negativa (cuánto más alto el *Coeficiente Gini de Desigualdad Educativa*, más baja la *participación de las personas en organizaciones de la sociedad civil*). A pesar de que vimos la correlación entre ambas variables y observamos una relación entre ambas a través del gráfico de dispersión, necesitamos **estimar un modelo**. 
+
+---
+
+## La función `lm`
+
+La función `lm` es la principal herramienta para la estimación de los modelos lineales. La forma general que toma la función es:
+
+```{r eval = F}
+lm(Y ~ 1 + X)
+```
+
+Ya habíamos visto que la ecuación del modelo lineal es el siguiente:
+
+$$Y_i = \alpha + \beta X_i + u_i$$
+A partir de la función, se entiende que un *modelo lineal* se estima para una VD Y regresada (~) en una VI X. El "1"  no suele incluirse, pero lo añadimos para denotar la intercepción ($\beta_0$). Nuestro modelo plantea que la *participación en Organizaciones de la Sociedad Civil (OSC)* es una función lineal de la *Índice de Gini de desigualdad educativa*, además de un término de error no observado $u$ y una constante $\beta_0$. Formalmente:
+
+$$Participación OSC = \beta_0 + \beta_1 DesigualdadEd + u$$
+---
+
+Asumiremos que las 202 observaciones que componen nuestra base de datos `vdem_subset` son observaciones independientes. El supuesto de observaciones independientes y distribuidas de forma idéntica es lo que nos permite escribir el modelo para un individuo de $i$ escogido al azar como:
+
+$$Participación OSC_i = \beta_0 + \beta_1 DesigualdadEd_i + u_i$$
+Ahora, hacemos nuestro modelo en R:
+
+```{r}
+modelo_ej <- lm(v2x_cspart ~ 1 + e_peedgini, data = vdem_subset)
+
+class(modelo_ej)
+```
+
+El objeto `modelo_ej` guarda los resultados de la función `lm`, que son vectores que incluyen los coeficientes estimados, los errores estándares, los residuos, los valores predichos, entre otros resultados de la estimación. Para ver los componentes podemos usar `summary`:
+
+```{r eval = FALSE}
+summary(modelo_ej)
+```
+
+---
+
+.pull-right[
+
+Podemos presentar estos resultados de manera más elegante con `screenreg` del paquete `texreg`.
+
+```{r message=F, warning=F}
+library(texreg)
+
+screenreg(modelo_ej)
+```
+
+]
+
+.pull-left[
+
+```{r}
+summary(modelo_ej)
+```
+
+]
+
+Como podemos notar, los resultados se muestran mejor con esta función que con `summary()`. Se ve claramente que `e_peedgini` tiene un efecto negativo de magnitud 0,4. En particular, cuando la desigualdad educativa aumenta en una unidad, la participación en OSC disminuye en 0,4 puntos, con un nivel de significancia de 99,9%. 
+
+>La significancia estadística es el resultado de un test-t. Esta prueba indica la distancia estandarizada, donde la beta estimmada se encuentraen la distribución bajo la hipótesis nula de que $\beta_1 = 0$. Es estimador tiene una distribución t-Student con grados de libertad iguales a $n - k - 1$ donde $k$ es el número de variables independientes y se suma 1 para la estimación de la contante $\beta_0$
+
+El valor t siempre se interpreta como la distancia de la estimación $\hat \beta_1$ de la media de la distribución del estimador baho $H_0 = \beta_1 = 0$. En este caso, el valor 0,4 está a -6,4 desviaciones estándar de la distribución del estimador cuando H0 es verdadero.
+
+---
+
+class: center, middle
+
+## Representaciones gráficas
+
+En este primer gráfico, que ya habíamos revisado, las observaciones se grafican según sus valores de las variables independientes y dependientes.
+
+```{r warning=F, echo=F, message=F, out.width="50%", out.height="50%"}
+vdem_subset %>%
+  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F, color = "#ed6a5a") +
+  labs(x = "Coeficiente de Gini de desiguadad educacional", y = "Participación") +
+  theme_minimal(base_family = "Arial") +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18))
+```
+
+---
+
+class: center, middle
+
+En un comienzo, mencionamos que la regresión busca el mejor ajuste para la línea de regresión, pero ¿qué significa esto?
+
+Para tener una idea más clara, necesitamos la información para cada una de las observaciones. Por ejemplo, nosotros nos enfocaremos en los valores de la observación 34:
+
+```{r warning=F}
+library(moderndive)
+estimadores <- get_regression_table(modelo_ej)
+estimadores_obs <- get_regression_points(modelo_ej)
+
+head(estimadores_obs)
+```
+
+Valores de la fila 30:
+
+```{r eval =F}
+estimadores_obs[34,]
+```
+
+---
+
+class: center, middle
+
+```{r}
+estimadores_obs[34,]
+```
+
+### ¿Qué observamos?
+
+* `v2x_cspart`: esta columna representa los resultados observados de la variable $y$ para los 135 valores. 
+* `e_peedgini`: esta columna representa los valores de la variable exploratoria $x$ para los 135 valores.
+* `v2x_cspart_hat`: esta columna representa los valores ajustados de $\hat y$ para los 135 valores.
+* `residual`: esta columna representa los residuales de $y - \hat y$. Es la distancia vestical entre los 135 valores y la línea de regresión.
+
+Ahora, tomemos en consideración los datos de la observación 34:
+
+* `v2x_cspart`:  0.39 es el valor observado de participación $y$ para el país 34.
+* `e_peedgini`: 42.9 es el valor de la variable explicativa $x$ para el país 34.
+* `v2x_cspart_hat`: $0.428 = 0.596 + -0.004 * 42.9$ es el valo ajustado de $\hat y$ en la línea de regresión de este país.
+* `residual`: $-0.032 = 0.39 - 0.428$ es el valor del residual de este país. En otras palabras, el ajuste del valor en este modelo estaba "corrido" por -0.032 unidades del índice de participación en este país particular.
+
+---
+
+class: center, middle
+
+### Entonces, observamos el residuo en el siguiente gráfico:
+
+```{r warning=F, echo=F, message=F, out.width="70%", out.height="60%"}
+
+vdem_subset %>%
+  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = T, color = "black") +
+  annotate("point", x = 42.9, y = 0.397, color = "red") +
+  annotate("point", x = 42.9, y = 0.428, color = "blue") +
+  labs(x = "Coeficiente de Gini de desiguadad educacional", y = "Participación") +
+  theme_minimal(base_family = "Arial") +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 18))
+```
+
+---
+
+class: center, middle
+
+Ahora, si repetimos este proceso para cada una de las 135 observaciones, elevamos los residuales al cuadrado y los sumamos; nos da el valor de la suma de los cuadrados de los residuos, los cuales miden el "ajuste" del modelo.
+
+$$\sum_{i=1}^{n} (y_i - \hat y_1)^2$$
+
+Valores grandes indican un *peor ajuste del modelo*. En este caso, la regresión trata de minimizar la suma de los residuos al cuadrado, buscando el resultado más estrecho a la línea que observamos.
+
+---
+
+## Supuestos de Mínimos Cuadrados Ordinarios
+
+Como ustedes saben, el estimador MCO será útil si se cumplen los supuestos Gauss-Markov. Esto permite que sea el mejor parámetro lineal sin sesgo.
+
+Es importante evaluar si estos supuestos se cumplen en nuestra estimación. En muchos casos esta evaluación es teórica y, en algunos casos, podría ser abordada empíricamente.
+
+1. Cero condicionalidad de la media
+2. Muestra aleatoria
+3. Variación en variables independientes y colinealidad no-perfecta
+
+---
+
+4. Linealidad de los parámetros
+
+```{r}
+ggplot(mapping = aes(x = modelo_ej$fitted.values, y = modelo_ej$residuals)) +
+  labs(x = "Valores predichos", y = "Residuos") +
+  geom_point() +
+  geom_hline(mapping = aes(yintercept = 0), color = "red")
+```
+
+---
+
+5. Homoscedasticidad
+
+Este error está relacionado con la eficiencia. Es decir, con la variación del término de error de nuestra estimación. Hay dos formas de evaluar este supuesto.
+
+---
+
+## Entrenar el ojo:
+
+Interpretar coeficientes de correlación que no estén cerca de valores extremos como -1, 0 y 1 puede ser bastante subjetivo. Para ayudarte a desarrollar un mejor sentido de estos coeficientes, te sugiero jugar [Guess the Correlation](http://guessthecorrelation.com).

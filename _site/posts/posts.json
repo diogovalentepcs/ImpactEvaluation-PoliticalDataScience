@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2022-09-01-tarea/",
+    "title": "Tarea Clase 01 Septiembre",
+    "description": "Graficos",
+    "author": [
+      {
+        "name": "Diogo Polónia",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2022-09-01",
+    "categories": [],
+    "contents": "\nTarea\nUna de las formas de aprender a usar R, es simplemente aprender a\nbuscar lo que necesitamos usar. Algunos de las funciones las hemos visto\nen clases, pero siempre pueden buscar otras formas de lograr los mismos\nresultados.\nCon los materiales que hemos visto, vamos a realizar gráficos\nexploratorios:\nLibraries:\n\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\n\nCarga de bases de datos:\n\n\nvdem <- readRDS(\"../../_clases/vdem.rds\")\n\nvdem_subset <- vdem %>% \n  select(country_name, v2x_partipdem, \n         v2x_cspart, v2elmulpar, v2psprlnks, e_peedgini, \n         e_regionpol, e_gdppc, e_pop) %>% \n  group_by(country_name) %>% \n  summarise_all(function(x)  mean(x, na.rm = T))\n\n\nHistograma\n\n\nvdem_subset %>% \n  ggplot(aes(x = v2x_cspart, na.rm = T)) +\n  geom_histogram(binwidth = 0.05) +\n  theme_minimal(base_family = \"Arial\") +\n  labs(x = \"Participación de las personas en OSC [0-1] \", y = \"Frecuencia\",\n       title = \"Distribución de la variable dependiente\",\n       caption = \"Fuente: Varieties of Democracy\")\n\n\n\nGráfico de barras\n\n\nvdem_subset %>% \n  ggplot(aes(x=factor(e_regionpol)))+\n  geom_bar( color=\"cadetblue\", fill=\"steelblue\", alpha = 0.5) +\n  theme_minimal() +\n  labs(x = \"Clasificacion Politica\", y = \"Frecuencia\",\n       title = \"Paises por Clasificacion Politica\",\n       caption = \"Fuente: Varieties of Democracy\")\n\n\n\nBoxplot\n\n\nvdem_subset %>% \n  ggplot(aes(x=factor(e_regionpol), y = e_peedgini  ))+\n  geom_boxplot( color=\"cadetblue\", fill=\"steelblue\", alpha = 0.5) +\n  theme_minimal() +\n  labs(x = \"Clasificacion Politica\", y = \"Inequidad Educacional\",\n       title = \"Distribuicion de Inequidad Educacional por Clasificacion Politica\",\n       caption = \"Fuente: Varieties of Democracy\")\n\n\n\nScatterplot\n\n\nvdem_subset %>% \n  ggplot(aes(x = e_peedgini, y = v2x_cspart)) +\n  geom_point() +\n  labs(x = \"Coeficiente de Gini de desiguadad educaciona\", y = \"Participación\") +\n  theme_minimal(base_family = \"Arial\") +\n  theme(axis.text = element_text(size = 16),\n        axis.title = element_text(size = 18))\n\n\n\n\n\n\n",
+    "preview": "posts/2022-09-01-tarea/Tarea-Clase-01_09_files/figure-html5/unnamed-chunk-3-1.png",
+    "last_modified": "2022-09-01T21:17:44-04:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to Blog Datos Politicos",
     "description": "Welcome to our new blog, Blog Datos Politicos. We hope you enjoy \nreading what we have to say!",
