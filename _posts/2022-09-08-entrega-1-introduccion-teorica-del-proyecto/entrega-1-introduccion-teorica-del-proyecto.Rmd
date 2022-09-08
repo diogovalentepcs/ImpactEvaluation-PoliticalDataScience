@@ -48,7 +48,7 @@ Para esto se puede recorrer a las seguintes bases de datos:
 
 
 ## Hipotesis
-Mi hipotesis es la siguiente: *La utilización de bicicletas compartidas tien un relácion débil con la diminuición de la poluición del aire*
+Mi hipotesis es la siguiente: **La utilización de bicicletas compartidas tien un relácion débil con la diminuición de la poluición del aire**
 
 Argumentos:
 
