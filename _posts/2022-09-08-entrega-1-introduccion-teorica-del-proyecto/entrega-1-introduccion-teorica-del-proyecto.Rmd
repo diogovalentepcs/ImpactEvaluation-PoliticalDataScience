@@ -22,7 +22,7 @@ El sector del transporte es una de las mayores fuentes de emisiones de CO2 y una
 ![Transport sector CO2 emissions by mode untill 2018 and in the Sustainable Development Scenario (SDS) after 2018](transport_emissions.png)
 
 La contaminación de los vehículos es especialmente preocupante en las grandes ciudades, y puede convertirse en una de las principales causas de "Smog" y contaminación del aire.
-El smog se forma al mezclar el aire con contaminantes y gases de escape resultantes de las actividades humanas. Entre los factores responsables se encuentran las fábricas, el creciente número de coches, la quema de carbón, madera y otros combustibles sólidos en las estufas. Su formación también viene determinada por el tiempo, el clima y las condiciones generales de la zona. Será mucho más difícil deshacerse de los contaminantes cuando una ciudad esté en un valle y el clima sin viento impida que se dispersen y se diluyan, haciendo que queden suspendidos sobre la ciudad. (Airly 2022)
+El smog se forma al mezclar el aire con contaminantes y gases de escape resultantes de las actividades humanas. Entre los factores responsables se encuentran las fábricas, el creciente número de coches, la quema de carbón, madera y otros combustibles sólidos en las estufas. Su formación también viene determinada por el tiempo, el clima y las condiciones generales de la zona. Será mucho más difícil deshacerse de los contaminantes cuando una ciudad esté en un valle y el clima sin viento impida que se dispersen y se diluyan, haciendo que queden suspendidos sobre la ciudad. (Airly 2020)
 
 Santiago, en particular, está anidada entre dos cordilleras, la de los Andes y la de la Costa, lo que crea una bolsa de aire viciado en el valle con una ventilación mínima, provocando un fuerte smog y contaminación, inducida por la cantidad de pequeñas partículas respirables, PM2,5, en el aire (COHA, 2015).
 
@@ -58,6 +58,7 @@ La gente utiliza estos vehículos sobre todo para los desplazamientos que, de ot
 ## Referencias
 
 * [Ineternational Energy Agency, 2021; Transport](https://www.coha.org/the-battle-to-breathe-chiles-toxic-threat/#_edn7)
+* [Airly, 2020; What is Smog](https://airly.org/en/smog-definition-effects-and-causes/)
 * [COHA, 2015; The Battle to Breathe: Chile’s Toxic Threat](https://www.iea.org/topics/transport)
 
 
