@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2022-09-08-entrega-1-introduccion-teorica-del-proyecto/",
+    "title": "Entrega 1 - Introduccion Teorica del Proyecto",
+    "description": "A short description of the post.",
+    "author": [
+      {
+        "name": "Diogo Polónia",
+        "url": "https://example.com/norajones"
+      }
+    ],
+    "date": "2022-09-08",
+    "categories": [],
+    "contents": "\nDistill is a publication format for scientific and technical writing,\nnative to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-09-08T14:09:32-03:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2022-09-01-tarea/",
     "title": "Tarea Clase 01 Septiembre",
     "description": "Graficos",
