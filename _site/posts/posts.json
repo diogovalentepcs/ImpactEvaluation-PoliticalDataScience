@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2022-09-08-entrega-1-discursos-politicos-y-conciencia-ambiental/",
+    "title": "Entrega 1 - Discursos Politicos y Conciencia Ambiental (Tema 2)",
+    "description": "En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.",
+    "author": [
+      {
+        "name": "Diogo Polónia",
+        "url": "https://diogovalentepcs.github.io/website/"
+      }
+    ],
+    "date": "2022-09-08",
+    "categories": [],
+    "contents": "\nIntroducción\nA pesar de los grandes avances tecnológicos, políticos y de\ncomportamiento que se han producido en el mundo en los últimos años para\nenfrentar el cambio climático, es difícil exagerar el reto que el cambio\nclimático supone para la política, lo que unido a la dificultad de\nconseguir reducciones significativas de las emisiones, plantea\nimplicaciones de gran calado en la forma de hacer política.\nSon los propios políticos quienes, a través de las instituciones a\nnivel mundial, nacional y local, tienen la tarea de mediar en las\nrespuestas a los complejos problemas relacionados con el clima. Sin\nembargo, es difícil encontrar un análisis sistemático del impacto de los\ndiscursos de los políticos de alto nivel sobre el cambio climático,\nespecialmente en el comportamiento de la población en general con\nrespecto al medio ambiente. Esto plantea la pregunta politica:\nHa\ntenido efecto los discursos politicos relacionados con el clima en\ncambiar efectivamente los comportamientos generales de los\nciudadanos?\nChile es particularmente vulnerable al cambio climático y ya está\nexperimentando impactos del cambio climático. Entre otros efectos, Chile\nlleva acusando una sequía prolongada en el centro y sur del país desde\nel año 2010 (CR2, 2019).\nLos gases de efecto invernadero, como por ejemplo el CO2, son los que\nmás contribuyen al cambio climático mundial, y Chile hile es el país\nnúmero 140 del ranking de países por emisiones de CO2. En la figura se\npuede ver la evolución del CO2 per capita en lo país (Datosmacro,\n2019).\nChile: Per capita: how much CO2 does the\naverage person emit?En los últimos años, Chile ha introducido muchas políticas para\nluchar contra el cambio climático. Pero, ¿cómo entienden y articulan los\npolíticos chilenos un tema tan complejo como el cambio climático? ¿Y qué\neficacia tienen a la hora de inducir un cambio real en el comportamiento\nde los ciudadanos y la concienciación medioambiental?\nPara responder a estas preguntas, propongo analizar los discursos\npolíticos relacionados con el medio ambiente en Chile, utilizando el\nanálisis de sentimientos NLP y el análisis de corpus, para entender cómo\nse relacionan con el cambio de comportamiento real de los consumidores\nen las acciones medioambientales (por ejemplo, el reciclaje, el\ntransporte, los patrones de compra, etc.).\nVariables Operacionales\nEmissiones CO2eq\nSantiago AQI index\nNiveles PM2.5\nTasas de reciclaje\nDistancias percorridas en auto, bus y avión\nTipo de discurso politico\nEntidad discursora\nPara esto se puede recorrer a las seguintes bases de datos: * Instituto\nNacional de Estadisticas * Registro\nde Emisiones y Transferencias de Contaminantes (RETC) * World Bank Data para\nChile * Emisiones\nde Chile segun el Banco Mundial Chile\nHipotesis\nMi hipotesis es la siguiente: Los discursos políticos sobre\nel medio ambiente no consiguen inducir un cambio de comportamiento en la\npoblación.\nReferencias\nCR2, 2019; La megasequía\n2010-2019: Una lección para el futuro\nDatosmacro,\n2019; CO2 Chile\nOur World in\nData, 2019; CO2 Emissions\n\n\n\n",
+    "preview": {},
+    "last_modified": "2022-09-08T18:43:22-03:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/2022-09-08-entrega-1-introduccion-teorica-del-proyecto/",
     "title": "Entrega 1 - Impacto de la Micromobilidad en el Cima de Santiago (Tema 1)",
     "description": "En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.",
