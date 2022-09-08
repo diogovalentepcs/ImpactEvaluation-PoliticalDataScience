@@ -1,19 +1,19 @@
 [
   {
     "path": "posts/2022-09-08-entrega-1-introduccion-teorica-del-proyecto/",
-    "title": "Entrega 1 - Introduccion Teorica del Proyecto",
-    "description": "A short description of the post.",
+    "title": "Entrega 1 - Impacto de la Micromobilidad en el Cima de Santiago (Tema 1)",
+    "description": "En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.",
     "author": [
       {
         "name": "Diogo Polónia",
-        "url": "https://example.com/norajones"
+        "url": "https://diogovalentepcs.github.io/website/"
       }
     ],
     "date": "2022-09-08",
     "categories": [],
-    "contents": "\nDistill is a publication format for scientific and technical writing,\nnative to the web.\nLearn more about using Distill at https://rstudio.github.io/distill.\n\n\n\n",
+    "contents": "\nIntroducción\nEl sector del transporte es una de las mayores fuentes de emisiones\nde CO2 y una fuente importante de contaminación atmosférica. Dentro del\ntransporte general los “Passenger Road Vehicles”, es dicir los vehículos\nde transporte de pasajeros en carretera son los que más contaminan,\nincluso en comparación con “Road Freight Vehicles”, “Aviation” and\n“Shipping” (International Energy Agency, 2021).\nTransport sector CO2 emissions by mode\nuntill 2018 and in the Sustainable Development Scenario (SDS) after\n2018La contaminación de los vehículos es especialmente preocupante en las\ngrandes ciudades, y puede convertirse en una de las principales causas\nde “Smog” y contaminación del aire. El smog se forma al mezclar el aire\ncon contaminantes y gases de escape resultantes de las actividades\nhumanas. Entre los factores responsables se encuentran las fábricas, el\ncreciente número de coches, la quema de carbón, madera y otros\ncombustibles sólidos en las estufas. Su formación también viene\ndeterminada por el tiempo, el clima y las condiciones generales de la\nzona. Será mucho más difícil deshacerse de los contaminantes cuando una\nciudad esté en un valle y el clima sin viento impida que se dispersen y\nse diluyan, haciendo que queden suspendidos sobre la ciudad. (Airly\n2022)\nSantiago, en particular, está anidada entre dos cordilleras, la de\nlos Andes y la de la Costa, lo que crea una bolsa de aire viciado en el\nvalle con una ventilación mínima, provocando un fuerte smog y\ncontaminación, inducida por la cantidad de pequeñas partículas\nrespirables, PM2,5, en el aire (COHA, 2015).\nEn el contexto del enfoque de ciudad inteligente, la integración de\nlas innovaciones tecnológicas en los sistemas de movilidad urbana, por\nejemplo con la micromovilidad compartida, contribuye a mejorar el medio\nambiente y la calidad de vida.\nEn 2019, la Municipalidad de Santiago, con Bike Itaú, lanzó el nuevo\nsistema de bicicletas compartidas que tendrán los residentes y\nvisitantes de la ciudad, con planes mensuales de menos de 4 000 pesos,\ncon el fin de promover el uso de esta solución de micromovilidad y, en\nconsecuencia, mejorar el medio ambiente. Esto plantea la pregunta\npolitica:\nHa\ntenido efecto la introducción de sistemas de bicicletas compartidas\nbaratas y accessibles en a la polucion del aire en Santiago?\nPara contestar esta pregunta con calidade, hay que entender cómo ha\nevolucionado la contaminación del aire en Santiago, así como el número\nde vehículos en circulación y su relación con el uso de este\nsistema.\nVariables Operacionales\nEmissiones CO2eq\nSantiago AQI index\nNiveles PM2.5\nUtilización de Bike Itaú\nUtilización de vehículos de pasajeros por carretera\nPara esto se puede recorrer a las seguintes bases de datos: * Instituto\nNacional de Estadisticas * Registro\nde Emisiones y Transferencias de Contaminantes (RETC) * Informes\nBike Itaú (pedido privado)\nHipotesis\nMi hipotesis es la siguiente: La utilización de bicicletas\ncompartidas tien un relácion débil con la diminuición de la poluición\ndel aire\nArgumentos:\nLa gente utiliza estos vehículos sobre todo para los desplazamientos\nque, de otro modo, habrían realizado a pie, en bicicleta (no eléctrica)\no en transporte público (no sustituye a los coches).\nReferencias\nIneternational\nEnergy Agency, 2021; Transport\nCOHA, 2015; The\nBattle to Breathe: Chile’s Toxic Threat\n\n\n\n",
     "preview": {},
-    "last_modified": "2022-09-08T14:09:32-03:00",
+    "last_modified": "2022-09-08T17:31:10-03:00",
     "input_file": {}
   },
   {
