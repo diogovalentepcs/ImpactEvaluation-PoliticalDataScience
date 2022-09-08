@@ -1,5 +1,5 @@
 ---
-title: "Entrega 1 - Impacto de la Micromobilidad en el Cima de Santiago (Tema 1)"
+title: "Entrega 1 - Impacto de la Micromobilidad en el Clima de Santiago (Tema 1)"
 description: |
   En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.
 author:
