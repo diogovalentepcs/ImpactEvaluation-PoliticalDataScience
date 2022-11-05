@@ -1,11 +1,11 @@
 ---
-title: "Entrega 1 - Impacto de la Micromobilidad en el Clima de Santiago (Tema 1)"
+title: "[Proyecto | Introducción y Revisión Literaria] El Impacto de la Micromobilidad en lo Uso de Auto en Santiago"
 description: |
-  En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.
+  En este post planteo teoricamente el trabajo del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interés, inluindo una revisón de literatura, las variables disponibles y la hipótesis a testar, como base de mi investigación en el curso.
 author:
   - name: Diogo Polónia
     url: https://diogovalentepcs.github.io/website/
-date: 2022-09-08
+date: 2022-11-02 
 output:
   distill::distill_article:
     self_contained: false
@@ -17,42 +17,53 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 ## Introducción
-El sector del transporte es una de las mayores fuentes de emisiones de CO2 y una fuente importante de contaminación atmosférica. Dentro del transporte general los "Passenger Road Vehicles", es dicir los vehículos de transporte de pasajeros en carretera son los que más contaminan, incluso en comparación con "Road Freight Vehicles", "Aviation" and "Shipping" (International Energy Agency, 2021).
+El sector del transporte es una de las mayores fuentes de emisiones de CO2eq y una fuente importante de contaminación atmosférica. Dentro del transporte general los "Passenger Road Vehicles", es dicir los vehículos de transporte de pasajeros en carretera son los que más contaminan, incluso en comparación con "Road Freight Vehicles", "Aviation" and "Shipping" (International Energy Agency, 2021).
 
-![Transport sector CO2 emissions by mode untill 2018 and in the Sustainable Development Scenario (SDS) after 2018](transport_emissions.png)
+![Transport sector CO2eq emissions by mode untill 2018 and in the Sustainable Development Scenario (SDS) after 2018](transport_emissions.png)
 
-La contaminación de los vehículos es especialmente preocupante en las grandes ciudades, y puede convertirse en una de las principales causas de "Smog" y contaminación del aire.
+La contaminación del aire y la congéstion de los vehículo sieguen siendo problemas sérios en muchas ciudades por todo el mundo, pero particularmente en economias emergentes devido a lo aumento constante de lo uso de autos (Gallego et al., 2013). En muchas situaciónes, esto puede convertirse en una de las principales causas de "Smog" y contaminación del aire.
+
 El smog se forma al mezclar el aire con contaminantes y gases de escape resultantes de las actividades humanas. Entre los factores responsables se encuentran las fábricas, el creciente número de coches, la quema de carbón, madera y otros combustibles sólidos en las estufas. Su formación también viene determinada por el tiempo, el clima y las condiciones generales de la zona. Será mucho más difícil deshacerse de los contaminantes cuando una ciudad esté en un valle y el clima sin viento impida que se dispersen y se diluyan, haciendo que queden suspendidos sobre la ciudad. (Airly 2020)
 
-Santiago, en particular, está anidada entre dos cordilleras, la de los Andes y la de la Costa, lo que crea una bolsa de aire viciado en el valle con una ventilación mínima, provocando un fuerte smog y contaminación, inducida por la cantidad de pequeñas partículas respirables, PM2,5, en el aire (COHA, 2015).
+Santiago, en particular, está anidada entre dos cordilleras, la de los Andes y la de la Costa, lo que crea una bolsa de aire viciado en el valle con una ventilación mínima, provocando un fuerte smog y contaminación, inducida por la cantidad de pequeñas partículas respirables, PM2,5, en el aire (COHA, 2015). 
 
-En el contexto del enfoque de ciudad inteligente, la integración de las innovaciones tecnológicas en los sistemas de movilidad urbana, por ejemplo con la micromovilidad compartida, contribuye a mejorar el medio ambiente y la calidad de vida.
+En el contexto del enfoque de ciudad inteligente, la integración de las innovaciones tecnológicas en los sistemas de movilidad urbana, por ejemplo con la micromovilidad compartida, presentan una grand oportunidad para mejorar el medio ambiente y la calidad de vida. Ciudades en la America Latina ya experimentaran con diferents incentivos a la utilización de meios alternativos al auto y muchas empresas en esto secto han crescido mucho. En Febrero de 2019, por ejemplo, la Municipalidad de Santiago, con la compania Bike Itaú, lanzó un nuevo sistema de bicicletas compartidas para los residentes y visitantes de la ciudad, con planes mensuales de menos de 4 000 pesos, con el fin de promover el uso de esta solución de micromovilidad y, en consecuencia, mejorar el medio ambiente. 
 
-En 2019, la Municipalidad de Santiago, con Bike Itaú, lanzó el nuevo sistema de bicicletas compartidas que tendrán los residentes y visitantes de la ciudad, con planes mensuales de menos de 4 000 pesos, con el fin de promover el uso de esta solución de micromovilidad y, en consecuencia, mejorar el medio ambiente. Esto plantea la pregunta politica: 
+Dada la complejidad de la dinamica del transporte en una grand ciudad, internciones como esta presentan oportunidades unicas para profundizar nuestro conocimiento sobre como la populación (en general y hogares con difrentes niveles de ingresso) responde a politicas de micromovilidad. Este proyecto es un intento empirico de evaluar estas respostas, si y cuán rápido los hogares disminuen el uso del auto
 
-#### Ha tenido efecto la introducción de sistemas de bicicletas compartidas baratas y accessibles en a la polucion del aire en Santiago?
+## Hipótesis y Contextualiación Literaria
 
-Para contestar esta pregunta con calidade, hay que entender cómo ha evolucionado la contaminación del aire en Santiago, así como el número de vehículos en circulación y su relación con el uso de este sistema.
+No es la primera vez que se estudia si la implementación de soluciones de micromovilidad compartida de facil acesso en ciudades urbanas son efectivas en persuadir conductores a dejar el auto y cambiar para estas soluciónes, ni si "bycicle sharing" tiene un impacto real en lo ambiente. De hecho, ya hay conocimiento sobre lo "ahorro" ambiental en varios indicadores que la micromovilidad compartida orgina, a traves de una "Life Cycle Assessment (LCA)" (e.g. Zheng et al., 2019 y D’Almeida et al., 2021). En Shanghai, la implementación de bicicletas compartidas evitó la emissión de 25 000 toneladas de CO2 y 65 toneladas de NOX en 2016 (Zhang et al., 2018). La disminuicion del tráfico y congestión (y, tamníen de la poluición sonora) promovida por alternativas al uso del auto también ha sio examinada un poco por todo el mundo (Caulfield et al., 2017; Martens, 2007; Mont, 2004). 
+
+Sin embargo, mismo con un concensus largo sobre los varios beneficios ambientales que soluciones de bicicletas compartidas, pocos son los estudios que estimen, directamente, los impactos de "bike sharing" en el uso de auto en grandes ciudades (y la consecuente impacto en la poluición atmosférica), con técnicas de inferencia causal pertinentes. Es innegable que el uso compartido de la bicicleta, como icono de los sistemas de economía compartida y de servicio de productos, está ganando una creciente popularidad a nivel mundial, pero hay poco conocimiento sobre las condiciones en las que se está utilizando este modo de viaje emergente y si realmente están contribuyendo a una reducción del uso del auto. Este proyecto pretende, así, contribuir para cubrir este vacío de investigación a través de técnicas econometricas para estimar cuantitativamente los impactos del uso compartido de bicicletas en el uso de autos en Santiago. Es de esperar que también ayude a cuantificar mejor los efectos de las políticas de micromovilidad entre los grupos de ingresos y el tiempo. Se plantea, entonces, la sieguinte pregunta:
+
+#### Ha tenido efecto la renovación de lo sistema de bicicletas compartidas baratas y accessibles en a lo uso de auto en Santiago?
+
+Siguiendo el trabajo de Gallego et al., 2013, que estudia el impacto de las políticas de restricción del uso del auto, a falta de una medida directa del uso del coche, esta evaluación empírica se basará en un subproducto del uso del coche: las observaciones horarias de la concentración de monóxido de carbono (CO), que son registradas por una red de estaciones de control distribuidas por la ciudad (las estaciones también llevan registros de otros contaminantes y variables meteorológicas). El CO es un buen indicador del uso de los vehículos, sobre todo en las horas punta (de la mañana), en comparación con otros candidatos como los registros horarios de los flujos de tráfico y de otros contaminantes. Las fuentes móviles, y los vehículos ligeros en particular, son con mucho los principales emisores de CO, el 97% y el 94%, respectivamente.
+
+La estrategia empírica consistirá en comparar los registros de CO en las horas punta un año antes y después de la aplicación de lo sistema, controlando al mismo tiempo los efectos fijos del día de la semana y del mes del año, así como las condiciones meteorológicas (y, posteriormente, la actividad económica). Esta estrategia maneja bien la volatilidad diaria de los datos, que es habitual en las series temporales de contaminación, porque no estimamos el impacto de la política en un día concreto (por ejemplo, justo después de la aplicación de la política), sino a lo largo de un periodo de varios meses.
+
+Por lo tanto, hay que entender cómo se caracteriza el uso de auto en las horas de punta matinales (7 - 9), a traves de la contaminación del aire (CO) en Santiago, así como la ubicación de las estaciónes de bicicletas y todas las variables que pueden confundir el impacto del sistema en las mediciónes de CO.
 
 ## Variables Operacionales
-1. Emissiones CO2eq
-2. Santiago AQI index
-3. Niveles PM2.5 
-4. Utilización de Bike Itaú
-5. Utilización de vehículos de pasajeros por carretera
+1. Concentración horaria de CO y otros poluentes (SO2)
+2. Ubicación de las estáciones de control del aire
+3. Ubicación y número de bicicletas disponibles en cada estación de Bike Itaú
+4. Temperatura, humidad, velocidad y dirección del viento por hora
+5. (Futuramente) Census socio-economicos de la populación de Santiago
 
-Para esto se puede recorrer a las seguintes bases de datos:
+Para esto se recorrerá a las seguintes bases de datos:
+
+* [Sistema de Información Nacional de la Calidad del Aire (SINCA)](https://sinca.mma.gob.cl/index.php/region/index/id/M)
+* [Google Maps](https://www.google.com/maps/search/bike+itaú/@-33.4521995,-70.6347011,12z/data=!3m1!4b1)
 * [Instituto Nacional de Estadisticas](https://stat.ine.cl/Index.aspx?DataSetCode=E10000001)
-* [Registro de Emisiones y Transferencias de Contaminantes (RETC)](https://datosretc.mma.gob.cl/organization/6cfad7e3-235c-47ef-8686-05dbf3ef6a0d?groups=emisiones-al-aire)
-* Informes Bike Itaú (pedido privado)
-
 
 ## Hipotesis
-Mi hipotesis es la siguiente: **La utilización de bicicletas compartidas tien un relácion débil con la diminuición de la poluición del aire**
+Mi hipotesis es la siguiente: **La utilización de bicicletas compartidas no tien una relácion débil con la diminuición del uso de auto**
 
 Argumentos:
 
-La gente utiliza estos vehículos sobre todo para los desplazamientos que, de otro modo, habrían realizado a pie, en bicicleta (no eléctrica) o en transporte público (no sustituye a los coches).
+La gente utiliza estos vehículos sobre todo para los desplazamientos que, de otro modo, habrían realizado a pie, en bicicleta (no eléctrica) o en transporte público (no sustituye a los autos).
 
 
 ## Referencias
@@ -60,6 +71,15 @@ La gente utiliza estos vehículos sobre todo para los desplazamientos que, de ot
 * [Ineternational Energy Agency, 2021; Transport](https://www.coha.org/the-battle-to-breathe-chiles-toxic-threat/#_edn7)
 * [Airly, 2020; What is Smog](https://airly.org/en/smog-definition-effects-and-causes/)
 * [COHA, 2015; The Battle to Breathe: Chile’s Toxic Threat](https://www.iea.org/topics/transport)
+* F. Gallego, JP. Montero, C.Salas, 2013. The effect of transport policies on car use: Evidence from Latin American cities. Journal of Public Economics 107 (2013) 47–62
+* F. Zheng,F.Gu, W.Zhang, J.Guo, 2019. Is Bicycle Sharing an Environmental Practice? Evidence from a Life Cycle Assessment Based on Behavioral Surveys. MPDI Sustainability Journal
+* Y. Zhang, Z. Mi, 2018.Environmental benefits of bike sharing: A big data-based analysis. Applied Energy 220 (2018) 296-301
+* L. D’Almeida, T. Rye, F Pomponid, 2021. Emissions assessment of bike sharing schemes: The case of Just Eat Cycles in Edinburgh, UK. Sustainable Cities and Society 71 (2021) 
+* B. Caulfield, O’Mahony, M., Brazil, W., Weldon, P., 2017. Examining usage patterns of a bike-sharing scheme in a medium sized city. Transp. Res. Part A Policy Pract. 100, 152–161. doi:10.1016/j.tra.2017.04.023
+* K. Martens, 2007. Promoting bike-and-ride: The Dutch experience. Transp. Res. Part A Policy Pract. 41, 326–338
+* O. Mont, 2004. Institutionalisation of sustainable consumption patterns based on shared use. Ecol. Econ. 50, 135–153.
+doi:10.1016/J.ECOLECON.2004.03.030
+
 
 
 

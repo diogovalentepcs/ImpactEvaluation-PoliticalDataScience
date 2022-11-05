@@ -1,5 +1,5 @@
 ---
-title: "Entrega 1 - Discursos Politicos y Conciencia Ambiental (Tema 2)"
+title: "[Proyecto | Introducción] Discursos Politicos y Conciencia Ambiental (Discontinued)"
 description: |
   En este post describo una des mis opciones para el trabajo teórico del proyecto de Medícion y Analsisis de Datos Políticos. Esta descripción incluye un análisis del tema de interes y las variables disponibles como base de mi investigación el curso.
 author:

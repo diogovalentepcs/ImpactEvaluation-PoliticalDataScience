@@ -1,0 +1,4 @@
+
+the regression includes monthly economic covariates that may affect the decision to own and use a car such as real exchange rates and gasoline prices.
+
+The figure illustrates for a week day in the month of January 2002 in Santiago, these chemical–atmospherical conditions pro- duce a low-correlation mapping between CO emissions and concentra- tion for most of the day except at the morning peak and after taking into account the background pollution that exists before the peak forms. This brief period of high correlation is what we exploit in our CO estimations. For this same reason we abandon the use of other pollutant records associated to car use, like nitrogen oxide (NOx), for which we failed to find such a systematic pattern.

@@ -1,0 +1,89 @@
+---
+title: "[Proyecto | Planteamiento Teórico] Estrategia Empírica y Planteamiento Teórico del Modelo"
+description: |
+  En este post se hace la descripción de la estrategia empírica base de mi proyecto de Medícion y Analsisis de Datos Políticos, explicando las variables y lo modelo de regresión lineal que va utilizarse.
+author:
+  - name: Diogo Polónia
+    url: https://diogovalentepcs.github.io/website/
+date: 2022-11-03 
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Inferencia Causal y Presupuestos Econometricos
+
+Uno de los mayores retos en los debates políticos es la falta de comprensión clara de la inferencia contrafactual y causal. Cuando queremos conocer el efecto causal de una intervención (cambio de política, tratamiento médico, implantación de un sistema de bicicletas compartidas) sobre un resultado determinado, es necesario comparar dos estados del mundo: el mundo en el que se produjo la intervención y el mundo en el que no se produjo. Este último es el mundo contrafactual. El problema es que no es posible observar el mundo en dos estados a la vez, lo que significa que observar el contrafactual es complicado y está sujeto a falacias racionales.
+
+La mayoría de las veces, inferimos la causalidad a partir de una simple comparación entre el mundo posterior a la intervención y el mundo anterior. Se trata de un análisis pre-post (en el que el "pre" sirve de contrafactual, un sustituto de cómo sería el mundo en ausencia de la intervención). Sin embargo, no se trata de un verdadero contrafactual, porque siempre hay muchos factores externos que pueden influir en los resultados que buscamos, lo que significa que estaríamos atribuyendo erróneamente a una política efectos que podrían ser causados por algo totalmente distinto.
+
+En lugar de ello, deberíamos basarnos en un conjunto de técnicas econométricas para crear un contrafactual fiable, con métodos experimentales (asignación aleatoria), cuasi experimentales o no experimentales (por ejemplo, regresión discontinua, emparejamiento).
+
+Sin embargo, hay situaciones en las que es muy difícil llevar a cabo estos diseños. Este es uno de esos casos:
+
+* No hay pruebas de que las estaciones hayan sido asignadas aleatoriamente, y hay fuertes razones para creer que Bike Itaú las colocó estratégicamente;
+* No hay una barrera clara que impida el uso del servicio (o que lo promueva), lo que hace que diseños como el de Discontinuidad de Regresión
+* Los datos disponibles son escasos, demasiado aproximados y no lo suficientemente granulares como para permitir el uso de Variables Instrumentales o Matching (por ejemplo, no hay datos sobre los individuos que utilizan las bicicletas o los vehículos)
+
+Por lo tanto, tendremos que recurrir al método menos que ideal del análisis pre-post (1 año antes y 1 año después, de modo a no introducir lo impacto de la pandemia de Covid-19), pero adoptaremos algunas estrategias para poder inferir la causalidad de dicho proceso. Éstas serán:
+
+* Controlar la estimación por variables observables que influyan directamente en la concentración de CO en el aire (velocidad y dirección del viento, temperatura, humedad), o que puedan captar otros efectos fijos (concentración de otros contaminantes);
+* Realizar una prueba de placebo, estimando el impacto de la implantación del sistema, sobre un punto en el tiempo anterior a la misma, donde no debería haber impacto. La falta de estimaciones de impacto significativas sobre el placebo validará aún más el modelo;
+* (Para futuros trabajos) Siguiendo a Gallego et al. 2013, existe una pequeña población con una estación de monitorización que presenta una tendencia de CO ex-ante que la hace indistinguible, en términos relativos, de las tendencias de CO de cualquiera de las estaciones de monitorización de Santiago. Esta ciudad puede servir como contrafactual de una estimación de impacto de diferencias en diferencias.
+
+## Por quê CO?
+
+El monóxido de carbono (CO) es un candidato natural para estudiar los cambios en el uso del automóvil es una serie temporal con lecturas horarias del tráfico de vehículos procedentes de estaciones de control de tráfico. El uso de recuentos de tráfico reales es inviable, principalmente debido a:
+
+1. No existe información horaria de fácil acceso sobre el tráfico;
+2. Puede haber efectos de equilibrio general y de desplazamiento en los que, por ejemplo, las intervenciones locales temporales o el aumento de la congestión en un lugar concreto (calle) obligan a los conductores a buscar calles alternativas (por ejemplo, una estación en una calle atascada informaría de un flujo de tráfico prácticamente nulo). Como las estaciones de recuento sólo cubren una pequeña fracción de las calles, es imposible registrar todos estos flujos de "desvío". Por lo tanto, estos registros de tráfico pueden subestimar en gran medida el uso del coche;
+3. La congestión también puede disminuir los recuentos de tráfico por hora, ya que los coches se mueven más lentamente, lo que aumenta la falta de fiabilidad de su estimación del uso del coche.
+
+A pesar de que no mide el uso del coche directamente, sino un subproducto del mismo, nuestro sustituto preferido para el uso del coche es el CO en las horas punta. Dada la complejidad de la dinámica del transporte en grandes ciudades como Santiago, el uso de registros de concentración de CO por hora parece alentador por varias razones:
+
+1. Según los inventarios de emisiones, las fuentes móviles, y los vehículos ligeros en particular, son con diferencia los principales emisores de CO, 97% y 94%, respectivamente;
+2. Las mediciones de CO, al contrario que los registros horarios del tráfico de vehículos, captan mejor los efectos a escala de la ciudad o el municipio que en un lugar concreto (por ejemplo, una calle);
+3. Dado que las emisiones de CO están inversamente relacionadas con la velocidad de los vehículos para un amplio rango (Robertson et al., 1998), los niveles de CO crecen monotónicamente con el tráfico (es decir, el número de viajes en coche) independientemente del nivel inicial de congestión;
+4. El uso del CO es que los registros de concentración en el pico de la mañana, digamos a las 8-9 am, están directamente relacionados con la actividad del tráfico en ese momento del día, porque la razón es que el CO es el único contaminante que puede considerarse no reactivo (es decir, que no reacciona con otros contaminantes o con la luz solar) en una escala de tiempo de un día, que es tiempo más que suficiente para que un contaminante se disperse (Schmitz, 2005);
+5. En condiciones meteorológicas estables, antes y alrededor de la hora punta de la mañana, el rápido aumento del uso de los vehículos (y de las emisiones de CO) se refleja inmediatamente en cambios en los niveles de contaminación por CO, que sólo se dispersan cuando el viento se levanta más tarde por la mañana (Jorquera, 2002);
+6. Los registros de CO en las horas pico es que es probable que las lecturas de las estaciones de monitoreo individuales capturen los desplazamientos de los hogares cercanos (más tarde en el día y a medida que se desarrollan los vientos, los registros de concentración en una estación en particular se "contaminan" con emisiones de lugares distantes;
+7. Los dos últimos puntos presentan motivos para creer que una segunda estación también registra una pequeña parte del CO registrado por una estación de monitoreo.
+
+## Especificaciones Econométricas y Modelo de Regresión
+
+La variable dependiente es dada por los registros de CO durante las horas pico de los días de semana (se excluyen los sábados, domingos y festivos). Las horas pico se definen como las dos horas consecutivas que en promedio marcan las lecturas más altas en los dos años de la muestra (de 7:00 a 9:00 am). Es posible emplear enfoques de estimación que se basen en un fit flexible que incluya una variable ficticia de tratamiento para todo el período ex post de la póliza y una serie de variables ficticias mensuales que capturen la fase de ajuste posterior a la implementación. Las ecuaciones de estimación bajo los dos enfoques están dadas por la sieguinte regresión:
+
+$$ y_t = α_0 + α_1 \cdot y_t^b + α_2 \cdot x_t + β \cdot T_t + \sum δ_t \cdot M_t + ε_t $$
+donde $y_t$ es la concentración de CO en el período (hora) t en logs. Las variables explicativas son las siguientes:
+
+* $y_t^b$ es la contaminación de fondo antes de que se forme el pico, que corresponde a la contaminación nocturna (consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 1–5 am;
+* $x_t$ es un vector que incluye efectos fijos (hora del día, día de la semana y mes del año), medidas horarias de variables meteorológicas como temperatura, humedad real, velocidad y dirección del viento. También incluimos registros de SO2 como variable explicativa, los cuales están fácilmente disponibles en las mismas estaciones de monitoreo.
+
+Dado que el SO2 está principalmente relacionado con la actividad industrial y la generación de energía, sirve como un control de fenómenos meteorológicos comunes a todos los contaminantes, pero que no son capturados en su totalidad por nuestras variables climáticas, como las inversiones térmicas (Molina y Molina, 2002).
+
+El efecto del sistema de Bike Itaú se captura con:
+
+* $T_t$, dummy que toma el valor de 1 después de la implementación;
+* $M_t$, un indicador de mes que cubre varios meses después de la implementación (hasta 12);
+
+El efecto de la implementación de bicicletas compartidas sería $β + δ_1$ a corto plazo (es decir, el primer mes) y $β$ a largo plazo. Finalmente, $ε_t$ es el término de error. Cada observación es una hora en que se detectó la concentración de CO.
+
+También es importante controlar la distancia de una estación de monitoreo a las estaciones de bicicletas (y su capacidad). Sin embargo, esto requerirá un mayor análisis, ya que la mejor manera de incluir esta información no es obvia. Aquí hay algunas ideas sobre cómo hacerlo:
+1. Ejecute diferentes estimaciones para cada estación de monitoreo individualmente. El efecto calculado debe aumentar inversamente con la suma de las distancias de la estación de monitoreo a las estaciones de Bike Itaú. Esta relación también podría sufrir una regresión;
+2. Dividir las observaciones por estación de monitoreo e incluir como variable explicativa la suma de distancias, identificando cada estación.
+
+
+ 
+## Referencias
+
+* F. Gallego, JP. Montero, C.Salas, 2013. The effect of transport policies on car use: Evidence from Latin American cities. Journal of Public Economics 107 (2013) 47–62
+* S. Robertson, H. Ward, G. Marsden, U. Sandberg, U. Hammerstrom, 1998. The effects of speed on noise, vibration and emissions from vehicles. University College London
+* Schmitz, R., 2005. Modelling of air pollution dispersion in Santiago de Chile. Atmos. Environ. 39, 2035–2047
+* Jorquera, H., 2002. Air quality at Santiago, Chile: a box-modeling approach—I. Carbon monoxide, nitrogen oxides and sulfur dioxide. Atmos. Environ. 36, 315–330
+* Molina, L., Molina, M. (Eds.), 2002. Air Quality in the Mexico Megacity: An Integrated Assessment. Kluwer Academic Publishers, Dordrecht
+
+
