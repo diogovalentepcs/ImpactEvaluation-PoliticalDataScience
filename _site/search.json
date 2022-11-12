@@ -6,14 +6,14 @@
       "description": "Some additional details about the blog",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-11-04T23:49:20-03:00"
+      "last_modified": "2022-11-12T13:24:27-03:00"
     },
     {
       "path": "index.html",
       "title": "Blog Datos Politicos",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2022-11-04T23:49:21-03:00"
+      "last_modified": "2022-11-12T13:24:27-03:00"
     }
   ],
   "collections": ["posts/posts.json"]

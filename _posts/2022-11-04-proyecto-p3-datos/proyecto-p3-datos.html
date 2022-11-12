@@ -113,12 +113,12 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
   <script type="text/json" id="radix-rmarkdown-metadata">
-  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output"]}},"value":[{"type":"character","attributes":{},"value":["[Proyecto | Datos] Recopilación y Análisis de Datos"]},{"type":"character","attributes":{},"value":["Esta publicación describe los datos y la forma en que fueron recopilados, seguido de un análisis gráfico de las variables de interés.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Diogo Polónia"]},{"type":"character","attributes":{},"value":["https://diogovalentepcs.github.io/website/"]}]}]},{"type":"character","attributes":{},"value":["2022-11-04"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]}]}
+  {"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","params"]}},"value":[{"type":"character","attributes":{},"value":["[Proyecto | Datos] Recopilación y Análisis de Datos"]},{"type":"character","attributes":{},"value":["Esta publicación describe los datos y la forma en que fueron recopilados, seguido de un análisis gráfico de las variables de interés.\n"]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Diogo Polónia"]},{"type":"character","attributes":{},"value":["https://diogovalentepcs.github.io/website/"]}]}]},{"type":"character","attributes":{},"value":["2022-11-04"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["datapath","start_date","end_date"]}},"value":[{"type":"character","attributes":{},"value":["../../_assets/Data/"]},{"type":"integer","attributes":{},"value":[180201]},{"type":"integer","attributes":{},"value":[200201]}]}]}
   </script>
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["CO_hourly.png","CO_implementation.png","CO_monthly.png","proyecto-p3-datos_files/anchor-4.2.2/anchor.min.js","proyecto-p3-datos_files/bowser-1.9.3/bowser.min.js","proyecto-p3-datos_files/distill-2.2.21/template.v2.js","proyecto-p3-datos_files/header-attrs-2.16/header-attrs.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.min.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.min.map","proyecto-p3-datos_files/popper-2.6.0/popper.min.js","proyecto-p3-datos_files/tippy-6.2.7/tippy-bundle.umd.min.js","proyecto-p3-datos_files/tippy-6.2.7/tippy-light-border.css","proyecto-p3-datos_files/tippy-6.2.7/tippy.css","proyecto-p3-datos_files/tippy-6.2.7/tippy.umd.min.js","proyecto-p3-datos_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["CO_hourly.png","CO_implementation.png","CO_monthly.png","proyecto-p3-datos_files/anchor-4.2.2/anchor.min.js","proyecto-p3-datos_files/bowser-1.9.3/bowser.min.js","proyecto-p3-datos_files/distill-2.2.21/template.v2.js","proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-1.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-2.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-3.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-4.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-5.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-1.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-2.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-3.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-4.png","proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-5.png","proyecto-p3-datos_files/header-attrs-2.16/header-attrs.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.min.js","proyecto-p3-datos_files/jquery-3.6.0/jquery-3.6.0.min.map","proyecto-p3-datos_files/popper-2.6.0/popper.min.js","proyecto-p3-datos_files/tippy-6.2.7/tippy-bundle.umd.min.js","proyecto-p3-datos_files/tippy-6.2.7/tippy-light-border.css","proyecto-p3-datos_files/tippy-6.2.7/tippy.css","proyecto-p3-datos_files/tippy-6.2.7/tippy.umd.min.js","proyecto-p3-datos_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1515,6 +1515,11 @@ class="uri">https://diogovalentepcs.github.io/website/</a>
 </div>
 
 <div class="d-article">
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>knitr</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/knitr/man/opts_chunk.html'>opts_chunk</a></span><span class='op'>$</span><span class='fu'>set</span><span class='op'>(</span>echo <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span></code></pre>
+</div>
+</div>
 <h2 id="recopilación-de-datos">Recopilación de Datos</h2>
 <p>Como se discutió en las publicaciones anteriores, trataremos con 3
 tipos de datos:</p>
@@ -1576,6 +1581,322 @@ año (dummies)</li>
 de datos de ubicación; 2. Calcule las distancias lineales entre cada
 estación de monitoreo y todas las estaciones de bicicletas, y sume
 dichas distancias</p>
+<h2 id="eda-exploratory-data-analysis">EDA (Exploratory Data
+Analysis)</h2>
+<p>Vejamos los datos:</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span></span>
+<span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://yihui.org/knitr/'>knitr</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>emissions</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>'SO2'</span>, <span class='st'>'CO'</span><span class='op'>)</span></span>
+<span><span class='va'>weather</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'WindSpeed'</span>, <span class='st'>'Temp'</span>, <span class='st'>'Hum'</span><span class='op'>)</span></span>
+<span><span class='kw'>for</span> <span class='op'>(</span><span class='va'>item</span> <span class='kw'>in</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='va'>weather</span>, <span class='va'>emissions</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>  <span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>'{params$datapath}{item}_PuenteAlto.csv'</span><span class='op'>)</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>';'</span><span class='op'>)</span></span>
+<span>  <span class='fu'>show</span><span class='op'>(</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>,<span class='op'>]</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span></code></pre>
+</div>
+<pre><code>  FECHA..YYMMDD. HORA..HHMM. X X.1
+1          90124         100    NA
+2          90124         200    NA
+3          90124         300    NA
+4          90124         400    NA
+5          90124         500    NA
+  FECHA..YYMMDD. HORA..HHMM. X X.1
+1          90124         100    NA
+2          90124         200    NA
+3          90124         300    NA
+4          90124         400    NA
+5          90124         500    NA
+  FECHA..YYMMDD. HORA..HHMM. X X.1
+1          40101         100    NA
+2          40101         200    NA
+3          40101         300    NA
+4          40101         400    NA
+5          40101         500    NA
+  FECHA..YYMMDD. HORA..HHMM. Registros.validados
+1          90125         100                   1
+2          90125         200                   1
+3          90125         300                   1
+4          90125         400                   1
+5          90125         500                   1
+  Registros.preliminares Registros.no.validados  X
+1                                               NA
+2                                               NA
+3                                               NA
+4                                               NA
+5                                               NA
+  FECHA..YYMMDD. HORA..HHMM. Registros.validados
+1          90125         100                 2,8
+2          90125         200                 2,7
+3          90125         300                 2,9
+4          90125         400                 2,6
+5          90125         500                 2,5
+  Registros.preliminares Registros.no.validados  X
+1                                               NA
+2                                               NA
+3                                               NA
+4                                               NA
+5                                               NA</code></pre>
+</div>
+<p>Limpiar la base CO y filtrar para las fechas que queremos</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Rename, drop colunms and change string to numeric</span></span>
+<span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>'{params$datapath}CO_PuenteAlto.csv'</span><span class='op'>)</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>';'</span><span class='op'>)</span></span>
+<span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"Date_YYMMDD"</span> <span class='op'>=</span> <span class='st'>"FECHA..YYMMDD."</span>, </span>
+<span>         <span class='st'>"Time_HHMM"</span> <span class='op'>=</span> <span class='st'>"HORA..HHMM."</span>,</span>
+<span>         <span class='st'>"CO"</span> <span class='op'>=</span> <span class='st'>"Registros.validados"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Registros.preliminares</span>, <span class='op'>-</span><span class='va'>Registros.no.validados</span>, <span class='op'>-</span><span class='va'>X</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>CO <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>","</span>, <span class='st'>"."</span>, <span class='va'>CO</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)</span></span>
+<span><span class='va'>data</span> <span class='op'>&lt;-</span> <span class='va'>data</span><span class='op'>[</span><span class='va'>data</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span> <span class='op'>&gt;=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>start_date</span> <span class='op'>&amp;</span> <span class='va'>data</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span> <span class='op'>&lt;</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>end_date</span>, <span class='op'>]</span></span>
+<span></span>
+<span><span class='co'># Veryfy if all days and all hours exist </span></span>
+<span><span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span><span class='op'>)</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/difftime.html'>difftime</a></span><span class='op'>(</span><span class='st'>'2020-01-02'</span>, <span class='st'>'2018-01-02'</span>, units <span class='op'>=</span> <span class='st'>"days"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>24</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"All observations exist! :)"</span><span class='op'>)</span></span>
+<span><span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"Missing observations... Look out! :("</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span></code></pre>
+</div>
+<pre><code>All observations exist! :)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'>show</span><span class='op'>(</span><span class='va'>data</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>,<span class='op'>]</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>      Date_YYMMDD Time_HHMM   CO
+79056      180201         0 0.14
+79057      180201       100 0.17
+79058      180201       200 0.20
+79059      180201       300 0.24
+79060      180201       400 0.19</code></pre>
+</div>
+<p>Juntar todas las bases CO &amp; SO2</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Search for CO files</span></span>
+<span><span class='va'>files</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.files.html'>list.files</a></span><span class='op'>(</span>path<span class='op'>=</span><span class='va'>params</span><span class='op'>$</span><span class='va'>datapath</span>, pattern<span class='op'>=</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"*.csv"</span><span class='op'>)</span>, full.names<span class='op'>=</span><span class='cn'>TRUE</span>, recursive<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='va'>data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>CO</span><span class='op'>)</span></span>
+<span><span class='va'>dataset</span><span class='op'>$</span><span class='va'>index</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>dataset</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='co'># Iterate each file name</span></span>
+<span><span class='va'>bad_dfs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span><span class='va'>counter</span> <span class='op'>&lt;-</span> <span class='fl'>0</span></span>
+<span></span>
+<span><span class='kw'>for</span> <span class='op'>(</span><span class='va'>file</span> <span class='kw'>in</span> <span class='va'>files</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>    </span>
+<span>  <span class='va'>file_pattern</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>'{params$datapath}/'</span><span class='op'>)</span>, <span class='st'>''</span>, <span class='va'>file</span><span class='op'>)</span></span>
+<span>  <span class='va'>file_pattern</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>'_.*'</span>, <span class='st'>''</span>, <span class='va'>file_pattern</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='co'># Extract station name</span></span>
+<span>  <span class='va'>station</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>".*{file_pattern}_"</span><span class='op'>)</span>, <span class='st'>""</span>, <span class='va'>file</span><span class='op'>)</span></span>
+<span>  <span class='va'>station</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>sub</a></span><span class='op'>(</span><span class='st'>".csv.*"</span>, <span class='st'>""</span>, <span class='va'>station</span><span class='op'>)</span></span>
+<span>  <span class='va'>col_name</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_glue.html'>str_glue</a></span><span class='op'>(</span><span class='st'>"{file_pattern}_{station}"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='co'># Create dataframe</span></span>
+<span>  <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span><span class='op'>(</span><span class='va'>file</span>, header <span class='op'>=</span> <span class='cn'>TRUE</span>, sep <span class='op'>=</span> <span class='st'>';'</span><span class='op'>)</span></span>
+<span>  </span>
+<span>  <span class='co'># Clean dataframe</span></span>
+<span>  </span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>file_pattern</span> <span class='op'><a href='https://rdrr.io/r/base/match.html'>%in%</a></span> <span class='va'>emissions</span> <span class='op'>)</span> <span class='op'>{</span></span>
+<span>      <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>             <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span><span class='va'>Registros.validados</span> <span class='op'>:=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>","</span>, <span class='st'>"."</span>, <span class='va'>Registros.validados</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>             <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"Date_YYMMDD"</span> <span class='op'>=</span> <span class='st'>"FECHA..YYMMDD."</span>, </span>
+<span>               <span class='st'>"Time_HHMM"</span> <span class='op'>=</span> <span class='st'>"HORA..HHMM."</span>,</span>
+<span>                <span class='op'>!</span><span class='op'>!</span><span class='va'>col_name</span> <span class='op'>:=</span> <span class='st'>"Registros.validados"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>             <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>Registros.preliminares</span>, <span class='op'>-</span><span class='va'>Registros.no.validados</span>, <span class='op'>-</span><span class='va'>X</span><span class='op'>)</span> </span>
+<span>  <span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span> </span>
+<span>     <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>       <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span><span class='va'>X</span> <span class='op'>:=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span><span class='op'>(</span><span class='st'>","</span>, <span class='st'>"."</span>, <span class='va'>X</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>       <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span><span class='st'>"Date_YYMMDD"</span> <span class='op'>=</span> <span class='st'>"FECHA..YYMMDD."</span>, </span>
+<span>         <span class='st'>"Time_HHMM"</span> <span class='op'>=</span> <span class='st'>"HORA..HHMM."</span>,</span>
+<span>          <span class='op'>!</span><span class='op'>!</span><span class='va'>col_name</span> <span class='op'>:=</span> <span class='st'>"X"</span><span class='op'>)</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
+<span>       <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>X.1</span><span class='op'>)</span> </span>
+<span>  <span class='op'>}</span></span>
+<span>  </span>
+<span>  <span class='co'># Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)</span></span>
+<span>  <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>df</span><span class='op'>[</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span> <span class='op'>&gt;=</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>start_date</span> <span class='op'>&amp;</span> <span class='va'>df</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span> <span class='op'>&lt;</span> <span class='va'>params</span><span class='op'>$</span><span class='va'>end_date</span>, <span class='op'>]</span></span>
+<span></span>
+<span>  <span class='co'># Veryfy if all days and all hours exist </span></span>
+<span>  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>df</span><span class='op'>$</span><span class='va'>Date_YYMMDD</span><span class='op'>)</span> <span class='op'>!=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/difftime.html'>difftime</a></span><span class='op'>(</span><span class='st'>'2020-01-02'</span>, <span class='st'>'2018-01-02'</span>, units <span class='op'>=</span> <span class='st'>"days"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>24</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>    <span class='va'>bad_dfs</span><span class='op'>[</span><span class='va'>counter</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>station</span></span>
+<span>  <span class='op'>}</span></span>
+<span>  </span>
+<span>  <span class='co'># Merge df with orginal data</span></span>
+<span>  <span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span><span class='op'>(</span><span class='va'>dataset</span>, <span class='va'>df</span>, by <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Date_YYMMDD'</span>, <span class='st'>'Time_HHMM'</span><span class='op'>)</span>, all <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span>
+<span></span>
+<span><span class='kw'>if</span> <span class='op'>(</span><span class='va'>counter</span> <span class='op'>&gt;</span> <span class='fl'>0</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"Some observations don't exist ... Lookout for the following datasets:"</span>, <span class='va'>bad_dfs</span><span class='op'>)</span></span>
+<span><span class='op'>}</span> <span class='kw'>else</span> <span class='op'>{</span></span>
+<span>  <span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"All observations exist! :)"</span><span class='op'>)</span></span>
+<span><span class='op'>}</span></span></code></pre>
+</div>
+<pre><code>All observations exist! :)</code></pre>
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>dataset</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code>  Date_YYMMDD       Time_HHMM        index       CO_CerroNavia   
+ Min.   :180201   Min.   :   0   Min.   :    1   Min.   :0.1000  
+ 1st Qu.:180802   1st Qu.: 575   1st Qu.: 4381   1st Qu.:0.2500  
+ Median :190166   Median :1150   Median : 8760   Median :0.4800  
+ Mean   :186518   Mean   :1150   Mean   : 8760   Mean   :0.8151  
+ 3rd Qu.:190802   3rd Qu.:1725   3rd Qu.:13140   3rd Qu.:0.8800  
+ Max.   :200131   Max.   :2300   Max.   :17520   Max.   :9.7500  
+                                                 NA&#39;s   :2021    
+  CO_ElBosque     CO_Independencia  CO_LaFlorida    CO_LasCondes   
+ Min.   :0.1000   Min.   :0.1000   Min.   :0.100   Min.   :0.1000  
+ 1st Qu.:0.2300   1st Qu.:0.2300   1st Qu.:0.260   1st Qu.:0.2800  
+ Median :0.4300   Median :0.4000   Median :0.430   Median :0.3800  
+ Mean   :0.7116   Mean   :0.5866   Mean   :0.554   Mean   :0.4605  
+ 3rd Qu.:0.8100   3rd Qu.:0.7500   3rd Qu.:0.760   3rd Qu.:0.5800  
+ Max.   :6.8500   Max.   :4.7100   Max.   :2.130   Max.   :2.4700  
+ NA&#39;s   :2597     NA&#39;s   :2612     NA&#39;s   :16844   NA&#39;s   :1837    
+  CO_OHiggins      CO_Paduhuel    CO_PuenteAlto     CO_Talagante  
+ Min.   :0.1000   Min.   :0.110   Min.   :0.1000   Min.   :0.100  
+ 1st Qu.:0.3600   1st Qu.:0.398   1st Qu.:0.2400   1st Qu.:0.110  
+ Median :0.5100   Median :0.660   Median :0.4200   Median :0.210  
+ Mean   :0.7629   Mean   :0.847   Mean   :0.5997   Mean   :0.376  
+ 3rd Qu.:0.8700   3rd Qu.:1.060   3rd Qu.:0.7200   3rd Qu.:0.440  
+ Max.   :7.2400   Max.   :4.970   Max.   :5.7600   Max.   :3.690  
+ NA&#39;s   :841      NA&#39;s   :16844   NA&#39;s   :3013     NA&#39;s   :4068   
+ Hum_CerroNavia    Hum_ElBosque    Hum_Independencia
+ Min.   : 4.583   Min.   : 5.167   Min.   :  6.00   
+ 1st Qu.:38.501   1st Qu.:37.507   1st Qu.: 37.00   
+ Median :57.750   Median :55.675   Median : 53.08   
+ Mean   :57.423   Mean   :55.010   Mean   : 53.87   
+ 3rd Qu.:76.417   3rd Qu.:72.689   3rd Qu.: 70.33   
+ Max.   :99.028   Max.   :97.016   Max.   :100.01   
+ NA&#39;s   :49       NA&#39;s   :233      NA&#39;s   :150      
+ Hum_LaFlorida     Hum_LasCondes     Hum_OHiggins    
+ Min.   :  4.667   Min.   : 2.167   Min.   :  6.167  
+ 1st Qu.: 37.667   1st Qu.:37.583   1st Qu.: 39.417  
+ Median : 55.011   Median :55.342   Median : 57.171  
+ Mean   : 54.852   Mean   :54.885   Mean   : 57.033  
+ 3rd Qu.: 71.861   3rd Qu.:71.845   3rd Qu.: 74.173  
+ Max.   :100.016   Max.   :99.500   Max.   :100.167  
+ NA&#39;s   :1586      NA&#39;s   :314      NA&#39;s   :225      
+  Hum_Pudahuel    Hum_PuenteAlto    Hum_Talagante     SO2_ElBosque   
+ Min.   : 5.667   Min.   :  7.251   Min.   : 11.67   Min.   : 1.000  
+ 1st Qu.:39.583   1st Qu.: 38.839   1st Qu.: 49.84   1st Qu.: 1.000  
+ Median :58.667   Median : 54.346   Median : 71.42   Median : 1.000  
+ Mean   :58.157   Mean   : 55.376   Mean   : 67.92   Mean   : 1.131  
+ 3rd Qu.:77.000   3rd Qu.: 71.776   3rd Qu.: 87.35   3rd Qu.: 1.060  
+ Max.   :99.912   Max.   :100.028   Max.   :100.17   Max.   :15.860  
+ NA&#39;s   :248      NA&#39;s   :98        NA&#39;s   :520      NA&#39;s   :655     
+ SO2_LaFlorida    SO2_PuenteAlto    SO2_Talgante   Temp_CerroNavia 
+ Min.   : 1.000   Min.   : 1.000   Min.   :1.000   Min.   :-2.267  
+ 1st Qu.: 1.270   1st Qu.: 2.020   1st Qu.:1.310   1st Qu.: 9.933  
+ Median : 1.790   Median : 3.220   Median :2.060   Median :14.717  
+ Mean   : 2.004   Mean   : 3.004   Mean   :2.028   Mean   :15.562  
+ 3rd Qu.: 2.450   3rd Qu.: 3.570   3rd Qu.:2.390   3rd Qu.:20.638  
+ Max.   :16.780   Max.   :26.150   Max.   :9.640   Max.   :37.591  
+ NA&#39;s   :6999     NA&#39;s   :262      NA&#39;s   :2378    NA&#39;s   :50      
+ Temp_ElBosque    Temp_Independencia Temp_LaFlorida  
+ Min.   :-3.317   Min.   : 0.5334    Min.   :-1.609  
+ 1st Qu.: 8.659   1st Qu.:11.3111    1st Qu.: 9.717  
+ Median :13.484   Median :15.9517    Median :15.142  
+ Mean   :14.285   Mean   :16.5695    Mean   :15.749  
+ 3rd Qu.:19.467   3rd Qu.:21.3171    3rd Qu.:21.167  
+ Max.   :35.828   Max.   :36.7449    Max.   :37.570  
+ NA&#39;s   :232      NA&#39;s   :164        NA&#39;s   :2835    
+ Temp_LasCondes   Temp_OHiggins   Temp_Pudahuel    Temp_PuenteAlto 
+ Min.   :-1.350   Min.   :-2.15   Min.   :-1.992   Min.   :-1.067  
+ 1st Qu.: 9.958   1st Qu.:10.46   1st Qu.:10.430   1st Qu.:10.142  
+ Median :14.495   Median :15.18   Median :15.092   Median :14.775  
+ Mean   :15.195   Mean   :15.96   Mean   :15.838   Mean   :15.337  
+ 3rd Qu.:20.076   3rd Qu.:21.05   3rd Qu.:20.818   3rd Qu.:20.167  
+ Max.   :35.386   Max.   :37.57   Max.   :37.083   Max.   :35.911  
+ NA&#39;s   :791      NA&#39;s   :53      NA&#39;s   :1121     NA&#39;s   :95      
+ Temp_Talagante   WindSpeed_CerroNavia WindSpeed_ElBosque
+ Min.   :-1.400   Min.   :0.0043       Min.   :0.006     
+ 1st Qu.: 9.873   1st Qu.:0.3572       1st Qu.:0.395     
+ Median :13.520   Median :0.8337       Median :0.707     
+ Mean   :15.100   Mean   :1.1626       Mean   :1.054     
+ 3rd Qu.:19.797   3rd Qu.:1.7394       3rd Qu.:1.495     
+ Max.   :39.100   Max.   :5.6059       Max.   :4.848     
+ NA&#39;s   :509      NA&#39;s   :1020         NA&#39;s   :4364      
+ WindSpeed_Independencia WindSpeed_LaFlorida WindSpeed_LasCondes
+ Min.   :0.00161         Min.   :0.0042      Min.   :0.003      
+ 1st Qu.:0.38765         1st Qu.:0.3475      1st Qu.:0.472      
+ Median :0.70798         Median :0.6024      Median :0.991      
+ Mean   :0.88137         Mean   :0.7760      Mean   :1.261      
+ 3rd Qu.:1.23190         3rd Qu.:1.0096      3rd Qu.:1.710      
+ Max.   :3.53790         Max.   :3.9285      Max.   :8.711      
+ NA&#39;s   :146             NA&#39;s   :1518        NA&#39;s   :5441       
+ WindSpeed_OHiggins WindSpeed_Pudahuel WindSpeed_PuenteAlto
+ Min.   :0.00168    Min.   :0.0039     Min.   :0.0036      
+ 1st Qu.:0.32310    1st Qu.:0.4172     1st Qu.:0.5860      
+ Median :0.68129    Median :0.9507     Median :0.9611      
+ Mean   :0.96645    Mean   :1.2530     Mean   :1.3838      
+ 3rd Qu.:1.41514    3rd Qu.:1.8794     3rd Qu.:1.8824      
+ Max.   :4.21275    Max.   :4.9803     Max.   :6.6712      
+ NA&#39;s   :143        NA&#39;s   :973        NA&#39;s   :2514        
+ WindSpeed_Talagante
+ Min.   :0.0031     
+ 1st Qu.:0.3131     
+ Median :0.6853     
+ Mean   :0.8831     
+ 3rd Qu.:1.2193     
+ Max.   :4.6481     
+ NA&#39;s   :828        </code></pre>
+</div>
+<p>Datos no incluidos</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/njtierney/naniar'>naniar</a></span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'CO'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'SO2'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'WindSpeed'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-3.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'Temp'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-4.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'Hum'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-4-5.png" width="624" /></p>
+</div>
+<p>Las estaciones de monitoreo de La Florida y Paduhel no tienen datos
+suficientes para analisis, por lo tanto se eliminará estas estaciones.
+Para las seguientes, se van usar estrategias de inputación de datos.</p>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>'LaFlorida'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='va'>dataset</span> <span class='op'>&lt;-</span> <span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='op'>-</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>ends_with</a></span><span class='op'>(</span><span class='st'>'Paduhuel'</span><span class='op'>)</span><span class='op'>)</span></span>
+<span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'CO'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-1.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'SO2'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-2.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'WindSpeed'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-3.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'Temp'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-4.png" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='fu'><a href='https://docs.ropensci.org/visdat/reference/vis_miss.html'>vis_miss</a></span><span class='op'>(</span><span class='va'>dataset</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='fu'><a href='https://tidyselect.r-lib.org/reference/starts_with.html'>starts_with</a></span><span class='op'>(</span><span class='st'>'Hum'</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span></code></pre>
+</div>
+<p><img src="proyecto-p3-datos_files/figure-html5/unnamed-chunk-5-5.png" width="624" /></p>
+</div>
+<p>KNN Imputation …</p>
 <h2 id="visualizaciones-previstas">Visualizaciones previstas</h2>
 <p>El principal interés de las visualizaciones es investigar el
 comportamiento de la variable dependiente (CO), con el fin de validar
@@ -1587,7 +1908,7 @@ alt="CO implementation" /></p>
 <p>Además, los outliers deben estudiarse a través de boxplots para
 emisiones y variables climáticas, y, las correlaciones entre estos
 también deben estudiarse gráficamente.</p>
-<div class="sourceCode" id="cb1"><pre
+<div class="sourceCode" id="cb6"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

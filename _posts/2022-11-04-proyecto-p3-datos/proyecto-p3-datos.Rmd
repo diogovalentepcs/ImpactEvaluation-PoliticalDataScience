@@ -9,10 +9,15 @@ date: 2022-11-04
 output:
   distill::distill_article:
     self_contained: false
+
+params:
+  datapath: "../../_assets/Data/"
+  start_date : 180201
+  end_date: 200201
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Recopilación de Datos
@@ -42,6 +47,139 @@ La preparación de los datos requiere los siguientes pasos:
 Sobre los datos de ubicación, se requiere:
 1. Uniformizar los tipos de datos de ubicación;
 2. Calcule las distancias lineales entre cada estación de monitoreo y todas las estaciones de bicicletas, y sume dichas distancias
+
+## EDA (Exploratory Data Analysis) 
+Vejamos los datos:
+
+```{r}
+library(stringr)
+library(dplyr)
+library(knitr)
+
+emissions <- c( 'SO2', 'CO')
+weather <- c('WindSpeed', 'Temp', 'Hum')
+for (item in c(weather, emissions)) {
+  data <- read.csv(str_glue('{params$datapath}{item}_PuenteAlto.csv'), header = TRUE, sep = ';')
+  show(data[1:5,])
+}
+```
+
+Limpiar la base CO y filtrar para las fechas que queremos
+
+```{r}
+# Rename, drop colunms and change string to numeric
+data <- read.csv(str_glue('{params$datapath}CO_PuenteAlto.csv'), header = TRUE, sep = ';')
+data <- data %>%
+  rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
+         "Time_HHMM" = "HORA..HHMM.",
+         "CO" = "Registros.validados") %>%
+  select(-Registros.preliminares, -Registros.no.validados, -X) %>%
+  mutate(CO = as.numeric(gsub(",", ".", CO)))
+
+# Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)
+data <- data[data$Date_YYMMDD >= params$start_date & data$Date_YYMMDD < params$end_date, ]
+
+# Veryfy if all days and all hours exist 
+if (length(data$Date_YYMMDD) == as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
+  cat("All observations exist! :)")
+} else {
+  cat("Missing observations... Look out! :(")
+}
+
+show(data[1:5,])
+```
+
+Juntar todas las bases CO & SO2
+
+```{r}
+# Search for CO files
+files <- list.files(path=params$datapath, pattern=str_glue("*.csv"), full.names=TRUE, recursive=FALSE)
+
+dataset <- data %>%
+  select(-CO)
+dataset$index <- 1:nrow(dataset)
+
+# Iterate each file name
+bad_dfs <- list()
+counter <- 0
+
+for (file in files) {
+    
+  file_pattern <- sub(str_glue('{params$datapath}/'), '', file)
+  file_pattern <- sub('_.*', '', file_pattern)
+  
+  # Extract station name
+  station <- sub(str_glue(".*{file_pattern}_"), "", file)
+  station <- sub(".csv.*", "", station)
+  col_name <- as.character(str_glue("{file_pattern}_{station}"))
+  
+  # Create dataframe
+  df <- read.csv(file, header = TRUE, sep = ';')
+  
+  # Clean dataframe
+  
+  if (file_pattern %in% emissions ) {
+      df <- df %>%
+             mutate(Registros.validados := as.numeric(gsub(",", ".", Registros.validados))) %>%
+             rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
+               "Time_HHMM" = "HORA..HHMM.",
+                !!col_name := "Registros.validados") %>%
+             select(-Registros.preliminares, -Registros.no.validados, -X) 
+  } else { 
+     df <- df %>%
+       mutate(X := as.numeric(gsub(",", ".", X))) %>%
+       rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
+         "Time_HHMM" = "HORA..HHMM.",
+          !!col_name := "X") %>%
+       select(-X.1) 
+  }
+  
+  # Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)
+  df <- df[df$Date_YYMMDD >= params$start_date & df$Date_YYMMDD < params$end_date, ]
+
+  # Veryfy if all days and all hours exist 
+  if (length(df$Date_YYMMDD) != as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
+    bad_dfs[counter] <- station
+  }
+  
+  # Merge df with orginal data
+  dataset <- merge(dataset, df, by = c('Date_YYMMDD', 'Time_HHMM'), all = TRUE)
+}
+
+if (counter > 0) {
+  cat("Some observations don't exist ... Lookout for the following datasets:", bad_dfs)
+} else {
+  cat("All observations exist! :)")
+}
+
+summary(dataset)
+```
+
+Datos no incluidos
+
+``` {r}
+library(naniar)
+vis_miss(dataset %>% select(starts_with('CO')))
+vis_miss(dataset %>% select(starts_with('SO2')))
+vis_miss(dataset %>% select(starts_with('WindSpeed')))
+vis_miss(dataset %>% select(starts_with('Temp')))
+vis_miss(dataset %>% select(starts_with('Hum')))
+
+````
+Las estaciones de monitoreo de La Florida y Paduhel no tienen datos suficientes para analisis, por lo tanto se eliminará estas estaciones. Para las seguientes, se van usar estrategias de inputación de datos.
+
+````{r}
+dataset <- dataset %>% select(-ends_with('LaFlorida'))
+dataset <- dataset %>% select(-ends_with('Paduhuel'))
+vis_miss(dataset %>% select(starts_with('CO')))
+vis_miss(dataset %>% select(starts_with('SO2')))
+vis_miss(dataset %>% select(starts_with('WindSpeed')))
+vis_miss(dataset %>% select(starts_with('Temp')))
+vis_miss(dataset %>% select(starts_with('Hum')))
+
+````
+KNN Imputation
+...
 
 ## Visualizaciones previstas
 
