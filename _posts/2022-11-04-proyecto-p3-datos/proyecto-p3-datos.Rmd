@@ -182,28 +182,28 @@ vis_miss(wide_data %>% select(starts_with('CO')))
 ```
 </details>
 
-<details><summary>CO</summary>
+<details><summary>SO2</summary>
 
 ```{r visualize-missing-data-2}
 vis_miss(wide_data %>% select(starts_with('SO2')))
 ```
 </details>
 
-<details><summary>CO</summary>
+<details><summary>Hum</summary>
 
 ```{r visualize-missing-data-3}
 vis_miss(wide_data %>% select(starts_with('Hum')))
 ```
 </details>
 
-<details><summary>CO</summary>
+<details><summary>WindSpeed</summary>
 
 ```{r visualize-missing-data-4}
 vis_miss(wide_data %>% select(starts_with('WindSpeed')))
 ```
 </details>
 
-<details><summary>CO</summary>
+<details><summary>Temp</summary>
 
 ```{r visualize-missing-data-5}
 vis_miss(wide_data %>% select(starts_with('Temp')))
@@ -326,6 +326,16 @@ ggplot(long_data, aes(x=as.factor(Day), y=CO, color=as.factor(Day))) +
 ```
 </details>
 
+<details><summary>CO vs. Hour</summary>
+
+```{r boxplot-CO-Hour}
+ggplot(long_data, aes(x=as.factor(Hour), y=CO, color=as.factor(Hour))) + 
+    geom_boxplot() + 
+  labs(x = "Hour", y = "CO",
+       title = "Relacion entre Hour y CO")
+```
+</details>
+
 #### Analisis Humidad
 
 <details><summary>Hum vs. Temp</summary>
@@ -358,7 +368,7 @@ ggplot(long_data, aes(x=Station, y=Hum, color=Station)) +
 ```
 </details>
 
-<details><summary>CO vs. Month</summary>
+<details><summary>Hum vs. Month</summary>
 
 ```{r boxplot-Hum-Month}
 ggplot(long_data, aes(x=as.factor(Month), y=Hum, color=as.factor(Month))) + 
@@ -368,13 +378,23 @@ ggplot(long_data, aes(x=as.factor(Month), y=Hum, color=as.factor(Month))) +
 ```
 </details>
 
-<details><summary>CO vs. Day</summary>
+<details><summary>Hum vs. Day</summary>
 
 ```{r boxplot-Hum-Day}
 ggplot(long_data, aes(x=as.factor(Day), y=Hum, color=as.factor(Day))) + 
     geom_boxplot() + 
   labs(x = "Day", y = "Hum",
        title = "Relacion entre Day y Hum")
+```
+</details>
+
+<details><summary>Hum vs. Hour</summary>
+
+```{r boxplot-Hum-Hour}
+ggplot(long_data, aes(x=as.factor(Hour), y=Hum, color=as.factor(Hour))) + 
+    geom_boxplot() + 
+  labs(x = "Hour", y = "Hum",
+       title = "Relacion entre Hour y Hum")
 ```
 </details>
 
@@ -420,6 +440,16 @@ ggplot(long_data, aes(x=as.factor(Day), y=Temp, color=as.factor(Day))) +
 ```
 </details>
 
+<details><summary>Temp vs. Hour</summary>
+
+```{r boxplot-Temp-Hour}
+ggplot(long_data, aes(x=as.factor(Hour), y=Temp, color=as.factor(Hour))) + 
+    geom_boxplot() + 
+  labs(x = "Hour", y = "Temp",
+       title = "Relacion entre Hour y Temp")
+```
+</details>
+
 #### Analisis Velocidad Viento
 
 <details><summary>WindSpeed vs. Station</summary>
@@ -442,7 +472,7 @@ ggplot(long_data, aes(x=as.factor(Month), y=WindSpeed, color=as.factor(Month))) 
 ```
 </details>
 
-<details><summary>Temp vs. Day</summary>
+<details><summary>WindSpeed vs. Day</summary>
 
 ```{r boxplot-Wind-Day}
 ggplot(long_data, aes(x=as.factor(Day), y=WindSpeed, color=as.factor(Day))) + 
@@ -452,6 +482,17 @@ ggplot(long_data, aes(x=as.factor(Day), y=WindSpeed, color=as.factor(Day))) +
 ```
 </details>
 
+<details><summary>WindSpeed vs. Hour</summary>
+
+```{r boxplot-Wind-Hour}
+ggplot(long_data, aes(x=as.factor(Hour), y=WindSpeed, color=as.factor(Hour))) + 
+    geom_boxplot() + 
+  labs(x = "Hour", y = "WindSpeed",
+       title = "Relacion entre Hour y WindSpeed")
+```
+</details>
+
+Con estes graficos nos apercebemos que hay relaciones fuertes entre algunas de las variables registradas por la estación de monitoreo. Además, los valores registados dependen mucho del mes del año y de la hora del dia, y varian un poco entre las estaciónes de monitoreo. Por la presencia de relaciones fuertes entre las variables, se procederá a la inputación de datos.
 
 ### Inputación de Datos
 
