@@ -20,6 +20,8 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Planteamiento
+
 ## Recopilación de Datos
 
 Como se discutió en las publicaciones anteriores, trataremos con 3 tipos de datos:
@@ -48,56 +50,65 @@ Sobre los datos de ubicación, se requiere:
 1. Uniformizar los tipos de datos de ubicación;
 2. Calcule las distancias lineales entre cada estación de monitoreo y todas las estaciones de bicicletas, y sume dichas distancias
 
-## EDA (Exploratory Data Analysis) 
-Vejamos los datos:
+# Criación de los wide_datas principales
 
-```{r}
-library(stringr)
-library(dplyr)
-library(knitr)
+Primero cargamos las pacakges necesarias:
 
+```{r packages}
+library(stringr)  # adding variable sto a string
+library(dplyr)    # manipulate dataframes
+library(tidyr)    # tidying data
+library(naniar)   # missing data visualizations
+library(ggplot2)  # graphs
+
+```
+
+Vejamos los datos para una estación de monitoreo (Puento Alto, por ejemplo):
+
+```{r first-look}
 emissions <- c( 'SO2', 'CO')
 weather <- c('WindSpeed', 'Temp', 'Hum')
 for (item in c(weather, emissions)) {
-  data <- read.csv(str_glue('{params$datapath}{item}_PuenteAlto.csv'), header = TRUE, sep = ';')
+  data <- read.csv(str_glue('{params$datapath}_raw/{item}_PuenteAlto.csv'), header = TRUE, sep = ';')
   show(data[1:5,])
 }
 ```
 
-Limpiar la base CO y filtrar para las fechas que queremos
+Enenntemos limpiar la CO y filtrar para las fechas que queremos (de 2018-01-02 hasta 2020-01-02), 1 ãno antes y 1 año después de la implementación.
 
-```{r}
+```{r second-look}
 # Rename, drop colunms and change string to numeric
-data <- read.csv(str_glue('{params$datapath}CO_PuenteAlto.csv'), header = TRUE, sep = ';')
+data <- read.csv(str_glue('{params$datapath}_raw/CO_PuenteAlto.csv'), header = TRUE, sep = ';')
 data <- data %>%
-  rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
-         "Time_HHMM" = "HORA..HHMM.",
+  rename("DateYYMMDD" = "FECHA..YYMMDD.", 
+         "TimeHHMM" = "HORA..HHMM.",
          "CO" = "Registros.validados") %>%
   select(-Registros.preliminares, -Registros.no.validados, -X) %>%
   mutate(CO = as.numeric(gsub(",", ".", CO)))
 
 # Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)
-data <- data[data$Date_YYMMDD >= params$start_date & data$Date_YYMMDD < params$end_date, ]
+data <- data[data$DateYYMMDD >= params$start_date & data$DateYYMMDD < params$end_date, ]
 
 # Veryfy if all days and all hours exist 
-if (length(data$Date_YYMMDD) == as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
+if (length(data$DateYYMMDD) == as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
   cat("All observations exist! :)")
 } else {
   cat("Missing observations... Look out! :(")
 }
 
-show(data[1:5,])
+show(data[1:10,])
 ```
 
-Juntar todas las bases CO & SO2
+Ahora creamos el wide_data principal en forma "wide", o sea con los valores para cada estación como columnas, para todos los indicadores. Este formato permite:
+1. Facilitar el analisis visual de los datos por cada estación, en especial en relación a los valores en falta;
+2. No agregar NA's para casos en que no hay estaciones de monitoreo para un determinado indicador (e.g el SO2 so fue monitorizado en 4 estaciones)
 
-```{r}
-# Search for CO files
-files <- list.files(path=params$datapath, pattern=str_glue("*.csv"), full.names=TRUE, recursive=FALSE)
+```{r create-wide-dataset}
+# Search for .csv files
+files <- list.files(path=str_glue('{params$datapath}_raw/'), pattern="*.csv", full.names=TRUE, recursive=FALSE)
 
-dataset <- data %>%
+wide_data <- data %>%
   select(-CO)
-dataset$index <- 1:nrow(dataset)
 
 # Iterate each file name
 bad_dfs <- list()
@@ -105,7 +116,7 @@ counter <- 0
 
 for (file in files) {
     
-  file_pattern <- sub(str_glue('{params$datapath}/'), '', file)
+  file_pattern <- sub(str_glue('{params$datapath}_raw//'), '', file)
   file_pattern <- sub('_.*', '', file_pattern)
   
   # Extract station name
@@ -121,67 +132,332 @@ for (file in files) {
   if (file_pattern %in% emissions ) {
       df <- df %>%
              mutate(Registros.validados := as.numeric(gsub(",", ".", Registros.validados))) %>%
-             rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
-               "Time_HHMM" = "HORA..HHMM.",
+             rename("DateYYMMDD" = "FECHA..YYMMDD.", 
+               "TimeHHMM" = "HORA..HHMM.",
                 !!col_name := "Registros.validados") %>%
              select(-Registros.preliminares, -Registros.no.validados, -X) 
   } else { 
      df <- df %>%
        mutate(X := as.numeric(gsub(",", ".", X))) %>%
-       rename("Date_YYMMDD" = "FECHA..YYMMDD.", 
-         "Time_HHMM" = "HORA..HHMM.",
+       rename("DateYYMMDD" = "FECHA..YYMMDD.", 
+         "TimeHHMM" = "HORA..HHMM.",
           !!col_name := "X") %>%
        select(-X.1) 
   }
   
   # Drops unwanted years (before 01 Feb 18 and on or after 01 Feb 2020)
-  df <- df[df$Date_YYMMDD >= params$start_date & df$Date_YYMMDD < params$end_date, ]
+  df <- df[df$DateYYMMDD >= params$start_date & df$DateYYMMDD < params$end_date, ]
 
   # Veryfy if all days and all hours exist 
-  if (length(df$Date_YYMMDD) != as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
+  if (length(df$DateYYMMDD) != as.numeric(difftime('2020-01-02', '2018-01-02', units = "days")) * 24) {
     bad_dfs[counter] <- station
   }
   
   # Merge df with orginal data
-  dataset <- merge(dataset, df, by = c('Date_YYMMDD', 'Time_HHMM'), all = TRUE)
+  wide_data <- merge(wide_data, df, by = c('DateYYMMDD', 'TimeHHMM'), all = TRUE)
 }
 
 if (counter > 0) {
-  cat("Some observations don't exist ... Lookout for the following datasets:", bad_dfs)
+  cat("Some observations don't exist ... Lookout for the following wide_datas:", bad_dfs)
 } else {
   cat("All observations exist! :)")
 }
 
-summary(dataset)
+# Create Index
+cols = colnames(wide_data)
+wide_data$index <- 1:nrow(wide_data)
+# Reorganize columns
+wide_data <- wide_data[, c('index', cols )]
+show(wide_data[1:10,1:10])
 ```
 
-Datos no incluidos
+## EDA (Exploratory Data Analysis) 
 
-``` {r}
-library(naniar)
-vis_miss(dataset %>% select(starts_with('CO')))
-vis_miss(dataset %>% select(starts_with('SO2')))
-vis_miss(dataset %>% select(starts_with('WindSpeed')))
-vis_miss(dataset %>% select(starts_with('Temp')))
-vis_miss(dataset %>% select(starts_with('Hum')))
+### Missing Data
 
-````
-Las estaciones de monitoreo de La Florida y Paduhel no tienen datos suficientes para analisis, por lo tanto se eliminará estas estaciones. Para las seguientes, se van usar estrategias de inputación de datos.
+<details><summary>CO</summary>
 
-````{r}
-dataset <- dataset %>% select(-ends_with('LaFlorida'))
-dataset <- dataset %>% select(-ends_with('Paduhuel'))
-vis_miss(dataset %>% select(starts_with('CO')))
-vis_miss(dataset %>% select(starts_with('SO2')))
-vis_miss(dataset %>% select(starts_with('WindSpeed')))
-vis_miss(dataset %>% select(starts_with('Temp')))
-vis_miss(dataset %>% select(starts_with('Hum')))
+```{r visualize-missing-data-1}
+vis_miss(wide_data %>% select(starts_with('CO')))
+```
+</details>
 
-````
-KNN Imputation
-...
+<details><summary>CO</summary>
 
-## Visualizaciones previstas
+```{r visualize-missing-data-2}
+vis_miss(wide_data %>% select(starts_with('SO2')))
+```
+</details>
+
+<details><summary>CO</summary>
+
+```{r visualize-missing-data-3}
+vis_miss(wide_data %>% select(starts_with('Hum')))
+```
+</details>
+
+<details><summary>CO</summary>
+
+```{r visualize-missing-data-4}
+vis_miss(wide_data %>% select(starts_with('WindSpeed')))
+```
+</details>
+
+<details><summary>CO</summary>
+
+```{r visualize-missing-data-5}
+vis_miss(wide_data %>% select(starts_with('Temp')))
+```
+</details>
+
+
+Las estaciones de monitoreo de La Florida y Paduhel no tienen datos suficientes para el analisis (en CO), por lo tanto se eliminará estas estaciones. Para las seguientes, se van usar estrategias de inputación de datos.
+
+```{r remove-missing-data-stations}
+wide_data <- wide_data %>% select(-ends_with('LaFlorida'))
+wide_data <- wide_data %>% select(-ends_with('Paduhuel'))
+```
+
+Datos en formato "long", el formato que se usará para la estimación de impacto. Este formato también facilita lo comparación entre indicadores y su relación con los dias y horas. Este formato no vá tener el SO2 porque este indicador no tiene todos las estaciones, y haciendo el pivot se agregarián valores NA a los demás que ya existen.
+
+```{r pivot-long-table}
+# Pivoting to Long table
+
+long_data <- wide_data %>% 
+  select(-contains("SO2")) %>%
+  tidyr::pivot_longer(
+   cols = contains("_"), 
+   names_to = c(".value", "Station"), 
+   names_sep = "_")
+
+long_data$index <- 1:nrow(long_data)
+show(long_data[1:10,])
+summary(long_data)
+```
+
+De acuerdo con los restantes datos, no parece haber una regla horaria para los valores en falta (e.g. entre las 2h y 3h lo monitoreo desliga). Lo que si acontece es que hay períodos longos en que no hay datos para una determinada estacíon (y solo para un o dos indicadores), por ejemplo para la estación de El Bosque solo tiene 1.32% de datos sobre la temperatura en falta, pero tiene 14.82% de datos del CO en falta. Esto se puede confirmar analisando el long_data por hora y se la distribuicion de missing data es uniforme por las horas, se valida esto.
+
+```{r missing-data-long-data}
+missing_data <- long_data %>% 
+  group_by(TimeHHMM) %>%
+  dplyr::summarize(CO = sum(is.na(CO)), 
+                   Hum = sum(is.na(Hum)), 
+                   WindSpeed = sum(is.na(WindSpeed)), 
+                   Temp = sum(is.na(Temp)))
+ 
+show(missing_data)
+```
+
+Así que también hace sentido remover observaciones y se optará por estudiar las relaciones entre los indicadores y altura del dia/ año para estimar los valores en falta. Para esto vamos a trabajar con lo formato longo, para estudiar las relaciones agregadamente
+
+Es necesario dividir la data en dia, mes y año.
+
+```{r day-month-year-separation}
+
+long_data <- long_data %>%
+  extract(DateYYMMDD, c("Year","Month", "Day"), "(..)(..)(..)", convert=TRUE, remove = FALSE) %>%
+  rename("Hour" = "TimeHHMM") %>% # let's take this chance to rename the column 
+  mutate(Hour = Hour/100) # There's only hourly verifiaction
+
+show(long_data[1:10,])
+
+```
+### Relaciones entre variables
+
+#### Analisis CO
+
+<details><summary>CO vs. Hum</summary>
+
+```{r scatterplot-CO-Hum}
+ggplot(long_data, aes(x=CO, y=Hum)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "CO", y = "Hum",
+       title = "Relacion entre CO y Hum")
+```
+</details>
+
+<details><summary>CO vs. Temp</summary>
+
+```{r scatterplots-CO-Temp}
+ggplot(long_data, aes(x=CO, y=Temp)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "CO", y = "Temp",
+       title = "Relacion entre CO y Temp")
+```
+</details>
+
+<details><summary>CO vs. WindSpeed</summary>
+
+```{r scatterplots-CO-Windspeed}
+ggplot(long_data, aes(x=CO, y=WindSpeed)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "CO", y = "WindSpeed",
+       title = "Relacion entre CO y WindSpeed")
+```
+</details>
+
+<details><summary>CO vs. Station</summary>
+
+```{r boxplot-CO-Station}
+ggplot(long_data, aes(x=Station, y=CO, color=Station)) + 
+    geom_boxplot()+ 
+  labs(x = "Station", y = "CO",
+       title = "Relacion entre CO y Station")
+```
+</details>
+
+<details><summary>CO vs. Month</summary>
+
+```{r boxplot-CO-Month}
+ggplot(long_data, aes(x=as.factor(Month), y=CO, color=as.factor(Month))) + 
+  geom_boxplot() + 
+  labs(x = "Month", y = "CO",
+       title = "Relacion entre CO y Month")
+```
+</details>
+
+<details><summary>CO vs. Day</summary>
+
+```{r boxplot-CO-Day}
+ggplot(long_data, aes(x=as.factor(Day), y=CO, color=as.factor(Day))) + 
+  geom_boxplot() + 
+  labs(x = "Day", y = "CO",
+       title = "Relacion entre CO y Day")
+```
+</details>
+
+#### Analisis Humidad
+
+<details><summary>Hum vs. Temp</summary>
+
+```{r scatterplot-Hu-Temp}
+ggplot(long_data, aes(x=Hum, y=Temp)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "Hum", y = "Temp",
+       title = "Relacion entre Hum y Temp")
+```
+</details>
+
+<details><summary>Hum vs. WindSpeed</summary>
+
+```{r scatterplots-Hum-Windpeed}
+ggplot(long_data, aes(x=Hum, y=WindSpeed)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "Hum", y = "WindSpeed",
+       title = "Relacion entre Hum y WindSpeed")
+```
+</details>
+
+<details><summary>Hum vs. Station</summary>
+
+```{r boxplot-Hum-Station}
+ggplot(long_data, aes(x=Station, y=Hum, color=Station)) + 
+    geom_boxplot()  + 
+    labs(x = "Station", y = "Hum",
+       title = "Relacion entre Hum y Station")
+```
+</details>
+
+<details><summary>CO vs. Month</summary>
+
+```{r boxplot-Hum-Month}
+ggplot(long_data, aes(x=as.factor(Month), y=Hum, color=as.factor(Month))) + 
+    geom_boxplot() + 
+    labs(x = "Month", y = "Hum",
+       title = "Relacion entre Hum y Month")
+```
+</details>
+
+<details><summary>CO vs. Day</summary>
+
+```{r boxplot-Hum-Day}
+ggplot(long_data, aes(x=as.factor(Day), y=Hum, color=as.factor(Day))) + 
+    geom_boxplot() + 
+  labs(x = "Day", y = "Hum",
+       title = "Relacion entre Day y Hum")
+```
+</details>
+
+#### Analisis Temperatura
+
+<details><summary>Temp vs. WindSpeed</summary>
+
+```{r scatterplots-Temp-Windspeed}
+ggplot(long_data, aes(x=Temp, y=WindSpeed)) +
+  geom_point(color="lightblue", size=2, shape=23) + 
+  labs(x = "Temp", y = "WindSpeed",
+       title = "Relacion entre Temp y WindSpeed")
+```
+</details>
+
+<details><summary>Temp vs. Station</summary>
+
+```{r boxplot-Temp-Station}
+ggplot(long_data, aes(x=Station, y=Temp, color=Station)) + 
+    geom_boxplot() + 
+  labs(x = "Station", y = "Temp",
+       title = "Relacion entre Temp y Station")
+```
+</details>
+
+<details><summary>Temp vs. Month</summary>
+
+```{r boxplot-Temp-Month}
+ggplot(long_data, aes(x=as.factor(Month), y=Temp, color=as.factor(Month))) + 
+  geom_boxplot() + 
+  labs(x = "Month", y = "Temp",
+       title = "Relacion entre Temp y Month")
+```
+</details>
+
+<details><summary>Temp vs. Day</summary>
+
+```{r boxplot-Temp-Day}
+ggplot(long_data, aes(x=as.factor(Day), y=Temp, color=as.factor(Day))) + 
+    geom_boxplot() + 
+  labs(x = "Day", y = "Temp",
+       title = "Relacion entre Day y Temp")
+```
+</details>
+
+#### Analisis Velocidad Viento
+
+<details><summary>WindSpeed vs. Station</summary>
+
+```{r boxplot-Wind-Station}
+ggplot(long_data, aes(x=Station, y=WindSpeed, color=Station)) + 
+    geom_boxplot()  +
+  labs(x = "Station", y = "WindSpeed",
+       title = "Relacion entre Station y WindSpeed")
+```
+</details>
+
+<details><summary>WindSpeed vs. Month</summary>
+
+```{r boxplot-Wind-Month}
+ggplot(long_data, aes(x=as.factor(Month), y=WindSpeed, color=as.factor(Month))) + 
+  geom_boxplot() + 
+  labs(x = "Month", y = "WindSpeed",
+       title = "Relacion entre WindSpeed y Month")
+```
+</details>
+
+<details><summary>Temp vs. Day</summary>
+
+```{r boxplot-Wind-Day}
+ggplot(long_data, aes(x=as.factor(Day), y=WindSpeed, color=as.factor(Day))) + 
+    geom_boxplot() + 
+  labs(x = "Day", y = "WindSpeed",
+       title = "Relacion entre Day y WindSpeed")
+```
+</details>
+
+
+### Inputación de Datos
+
+Se procederá a la inputación de datos de base en KNN o regression
+
+## Otras Visualizaciones previstas
 
 El principal interés de las visualizaciones es investigar el comportamiento de la variable dependiente (CO), con el fin de validar cómo se construye el modelo. Por lo tanto, el objetivo es crear visualizaciones como estas:
 
