@@ -16,7 +16,7 @@ params:
   end_date: 200201
 ---
 
-```{r setup, include=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -54,13 +54,13 @@ Sobre los datos de ubicación, se requiere:
 
 Primero cargamos las pacakges necesarias:
 
-```{r packages}
+```{r packages, output=FALSE}
 library(stringr)  # adding variable sto a string
 library(dplyr)    # manipulate dataframes
 library(tidyr)    # tidying data
 library(naniar)   # missing data visualizations
 library(ggplot2)  # graphs
-
+library(VIM)      # kNN inputation
 ```
 
 Vejamos los datos para una estación de monitoreo (Puento Alto, por ejemplo):
@@ -215,7 +215,7 @@ Las estaciones de monitoreo de La Florida y Paduhel no tienen datos suficientes 
 
 ```{r remove-missing-data-stations}
 wide_data <- wide_data %>% select(-ends_with('LaFlorida'))
-wide_data <- wide_data %>% select(-ends_with('Paduhuel'))
+wide_data <- wide_data %>% select(-ends_with('Pudahuel'))
 ```
 
 Datos en formato "long", el formato que se usará para la estimación de impacto. Este formato también facilita lo comparación entre indicadores y su relación con los dias y horas. Este formato no vá tener el SO2 porque este indicador no tiene todos las estaciones, y haciendo el pivot se agregarián valores NA a los demás que ya existen.
@@ -233,6 +233,13 @@ long_data <- wide_data %>%
 long_data$index <- 1:nrow(long_data)
 show(long_data[1:10,])
 summary(long_data)
+```
+
+
+```{r save-data}
+write.csv(wide_data,str_glue("{params$datapath}wide_data.csv"), row.names = FALSE)
+write.csv(long_data,str_glue("{params$datapath}long_data.csv"), row.names = FALSE)
+test <- read.csv(str_glue('{params$datapath}long_data.csv'), header = TRUE, sep = ',')
 ```
 
 De acuerdo con los restantes datos, no parece haber una regla horaria para los valores en falta (e.g. entre las 2h y 3h lo monitoreo desliga). Lo que si acontece es que hay períodos longos en que no hay datos para una determinada estacíon (y solo para un o dos indicadores), por ejemplo para la estación de El Bosque solo tiene 1.32% de datos sobre la temperatura en falta, pero tiene 14.82% de datos del CO en falta. Esto se puede confirmar analisando el long_data por hora y se la distribuicion de missing data es uniforme por las horas, se valida esto.
@@ -254,6 +261,7 @@ Es necesario dividir la data en dia, mes y año.
 
 ```{r day-month-year-separation}
 
+long_data$index <- 1:nrow(long_data)
 long_data <- long_data %>%
   extract(DateYYMMDD, c("Year","Month", "Day"), "(..)(..)(..)", convert=TRUE, remove = FALSE) %>%
   rename("Hour" = "TimeHHMM") %>% # let's take this chance to rename the column 
@@ -262,6 +270,42 @@ long_data <- long_data %>%
 show(long_data[1:10,])
 
 ```
+
+### Visualización Inicial
+
+```{r CO-Trends}
+
+plot_hour <- long_data %>% 
+  group_by(Year, Month, Day, Hour)            %>%
+  summarise(CO = mean(CO, na.rm = TRUE))
+plot_hour$index = seq(-nrow(plot_hour)/2,nrow(plot_hour)/2 -1, by=1)
+
+plot_day <- long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month, Day)            %>%
+  summarise(CO = mean(CO))
+plot_day$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_day)))
+
+plot_month <- long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month)            %>%
+  summarise(CO = mean(CO))
+plot_month$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_month)))
+
+ggplot() + 
+  geom_point(data = plot_hour, aes( x = index , y = CO, color="Hourly Concentration"), size=2, shape=23) + 
+  geom_line(data = plot_day, aes( x = index , y = CO, color="Daily Average"), size=1, alpha=0.5) + 
+  geom_line(data = plot_month, aes( x = index , y = CO, color="Montlhy Average"), size=1, alpha=0.5) +
+  geom_vline(xintercept = 0, linetype = "dotted", color = "sienna", size=1) +
+  annotate("text", x=0 - 400, y=2.5, label="Implementación de Política", angle=90, size=3.5) + 
+  scale_color_manual(name = "Values", 
+                     breaks=c("Hourly Concentration", "Daily Average", "Montlhy Average"),
+                     values = c("Hourly Concentration" = "lightblue", "Daily Average" = "aquamarine", "Montlhy Average" = "firebrick")) +
+  labs(x = "Time since Implementation (hours)", y = "CO Concentration",
+       title = "Evolución de la concentración CO")
+
+```
+
 ### Relaciones entre variables
 
 #### Analisis CO
@@ -498,12 +542,71 @@ Con estes graficos nos apercebemos que hay relaciones fuertes entre algunas de l
 
 Se procederá a la inputación de datos de base en KNN o regression
 
-## Otras Visualizaciones previstas
+```{r knn}
 
-El principal interés de las visualizaciones es investigar el comportamiento de la variable dependiente (CO), con el fin de validar cómo se construye el modelo. Por lo tanto, el objetivo es crear visualizaciones como estas:
+#Nearest Neighbor - Treat missing values
 
-![CO hourly](CO_hourly.png)
-![CO monthly](CO_monthly.png)
-![CO implementation](CO_implementation.png)
+##apply o nearest neighbor (kk), with k=5 because it's a default value
+##numerical variables with missing values
+clean_wide_data <- wide_data[, -1]
+clean_wide_data<-kNN(clean_wide_data, variable=colnames(clean_wide_data[,2:33]), k=5)
+sum(is.na(clean_wide_data))
+```
 
-Además, los outliers deben estudiarse a través de boxplots para emisiones y variables climáticas, y, las correlaciones entre estos también deben estudiarse gráficamente.
+```{r clean-data}
+
+clean_wide_data<-clean_wide_data[,1:33]
+
+clean_long_data <- clean_wide_data %>% 
+  select(-contains("SO2")) %>%
+  tidyr::pivot_longer(
+   cols = contains("_"), 
+   names_to = c(".value", "Station"), 
+   names_sep = "_") %>%
+  extract(DateYYMMDD, c("Year","Month", "Day"), "(..)(..)(..)", convert=TRUE, remove = FALSE) %>%
+  rename("Hour" = "TimeHHMM") %>% # let's take this chance to rename the column 
+  mutate(Hour = Hour/100) # There's only hourly verifiaction
+
+sum(is.na(clean_long_data))
+clean_long_data[1:10,]
+```
+
+```{r save-data-2}
+write.csv(clean_wide_data,str_glue("{params$datapath}clean_wide_data.csv"), row.names = FALSE)
+write.csv(clean_long_data,str_glue("{params$datapath}clean_long_data.csv"), row.names = FALSE)
+```
+
+Se puede verificar si la inputacion fue buena comparando un nuevo grafico de CO por ejemplo:
+
+```{r CO-Trends-2}
+
+plot_hour <- clean_long_data %>% 
+  group_by(Year, Month, Day, Hour)            %>%
+  summarise(CO = mean(CO, na.rm = TRUE))
+plot_hour$index = seq(-nrow(plot_hour)/2,nrow(plot_hour)/2 -1, by=1)
+
+plot_day <- clean_long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month, Day)            %>%
+  summarise(CO = mean(CO))
+plot_day$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_day)))
+
+plot_month <- clean_long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month)            %>%
+  summarise(CO = mean(CO))
+plot_month$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_month)))
+
+ggplot() + 
+  geom_point(data = plot_hour, aes( x = index , y = CO, color="Hourly Concentration"), size=2, shape=23) + 
+  geom_line(data = plot_day, aes( x = index , y = CO, color="Daily Average"), size=1, alpha=0.5) + 
+  geom_line(data = plot_month, aes( x = index , y = CO, color="Montlhy Average"), size=1, alpha=0.5) +
+  geom_vline(xintercept = 0, linetype = "dotted", color = "sienna", size=1) +
+  annotate("text", x=0 - 400, y=2.5, label="Implementación de Política", angle=90, size=3.5) + 
+  scale_color_manual(name = "Values", 
+                     breaks=c("Hourly Concentration", "Daily Average", "Montlhy Average"),
+                     values = c("Hourly Concentration" = "lightblue", "Daily Average" = "aquamarine", "Montlhy Average" = "firebrick")) +
+  labs(x = "Time since Implementation (hours)", y = "CO Concentration",
+       title = "Evolución de la concentración CO")
+
+```

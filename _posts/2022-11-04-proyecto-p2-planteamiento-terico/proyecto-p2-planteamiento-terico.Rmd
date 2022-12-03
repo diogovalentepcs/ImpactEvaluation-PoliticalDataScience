@@ -57,10 +57,10 @@ A pesar de que no mide el uso del coche directamente, sino un subproducto del mi
 
 La variable dependiente es dada por los registros de CO durante las horas pico de los días de semana (se excluyen los sábados, domingos y festivos). Las horas pico se definen como las dos horas consecutivas que en promedio marcan las lecturas más altas en los dos años de la muestra (de 7:00 a 9:00 am). Es posible emplear enfoques de estimación que se basen en un fit flexible que incluya una variable ficticia de tratamiento para todo el período ex post de la póliza y una serie de variables ficticias mensuales que capturen la fase de ajuste posterior a la implementación. Las ecuaciones de estimación bajo los dos enfoques están dadas por la sieguinte regresión:
 
-$$ y_t = α_0 + α_1 \cdot y_t^b + α_2 \cdot x_t + β \cdot T_t + \sum δ_t \cdot M_t + ε_t $$
-donde $y_t$ es la concentración de CO en el período (hora) t en logs. Las variables explicativas son las siguientes:
+$$ y_{ts} = α_0 + α_1 \cdot y_t^b + α_2 \cdot x_t + β_1 \cdot T_t  +β_2 \cdot T_t \cdot d_s + \sum δ_t \cdot M_t + ε_t $$
+donde $y_t$ es la concentración de CO en el período (hora) t y en la estación meteorologica s, en logs. Las variables explicativas son las siguientes:
 
-* $y_t^b$ es la contaminación de fondo antes de que se forme el pico, que corresponde a la contaminación nocturna (consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 1–5 am;
+* $y_t^b$ es la contaminación de fondo antes de que se forme el pico, que corresponde a la contaminación nocturna (consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 3–7 am;
 * $x_t$ es un vector que incluye efectos fijos (hora del día, día de la semana y mes del año), medidas horarias de variables meteorológicas como temperatura, humedad real, velocidad y dirección del viento. También incluimos registros de SO2 como variable explicativa, los cuales están fácilmente disponibles en las mismas estaciones de monitoreo.
 
 Dado que el SO2 está principalmente relacionado con la actividad industrial y la generación de energía, sirve como un control de fenómenos meteorológicos comunes a todos los contaminantes, pero que no son capturados en su totalidad por nuestras variables climáticas, como las inversiones térmicas (Molina y Molina, 2002).
@@ -68,6 +68,7 @@ Dado que el SO2 está principalmente relacionado con la actividad industrial y l
 El efecto del sistema de Bike Itaú se captura con:
 
 * $T_t$, dummy que toma el valor de 1 después de la implementación;
+* $d_s$, indica el promedio de las distancias de la estación meteorologica s a las estaciones de bike itaú
 * $M_t$, un indicador de mes que cubre varios meses después de la implementación (hasta 12);
 
 El efecto de la implementación de bicicletas compartidas sería $β + δ_1$ a corto plazo (es decir, el primer mes) y $β$ a largo plazo. Finalmente, $ε_t$ es el término de error. Cada observación es una hora en que se detectó la concentración de CO.

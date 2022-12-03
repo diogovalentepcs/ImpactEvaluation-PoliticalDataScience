@@ -1,0 +1,139 @@
+---
+title: "[Proyecto | Modelo] Creación del Modelo y Resultados"
+description: |
+  En esta publicación se crea el modelo de impacto causal y se analizan los resultados.
+author:
+  - name: Diogo Polónia
+    url: https://diogovalentepcs.github.io/website/
+date: 2022-11-04 
+output:
+  distill::distill_article:
+    self_contained: false
+
+params:
+  datapath: "../../_assets/Data/"
+  start_date : 180201
+  end_date: 200201
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Distill is a publication format for scientific and technical writing, native to the web.
+
+Learn more about using Distill at <https://rstudio.github.io/distill>.
+
+```{r packages, output=FALSE}
+library(stringr)  # adding variable sto a string
+library(dplyr)    # manipulate dataframes
+library(tidyr)    # tidying data
+library(naniar)   # missing data visualizations
+library(ggplot2)  # graphs
+library(ggbreak)
+```
+
+
+```{r load-data}
+
+wide_data <- read.csv(str_glue('{params$datapath}clean_wide_data.csv'), header = TRUE, sep = ',')
+long_data <- read.csv(str_glue('{params$datapath}clean_long_data.csv'), header = TRUE, sep = ',')
+
+long_data[1:10,]
+```
+## Horas de Punta
+
+```{r plot-hour}
+
+long_data %>%
+  group_by(Hour) %>%
+  summarise(CO = mean(CO)) %>%
+  ggplot(aes(x=as.factor(Hour), y=CO, color=as.factor(Hour))) + 
+  geom_point(size = 3) + 
+  labs(x = "Hour", y = "CO", title = "Concentraciones de CO en Santiago") +
+  theme(legend.position= "none")
+
+```
+
+Las horas punta se definen como las dos horas consecutivas que marcan de media las lecturas más altas en los dos años de la muestra. Graficamente se puede observar que estas horas son de 7-9 am.
+
+## Contaminación de Fundo
+
+Para el valor de contaminación de fundo consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 3–7 am
+
+```{r background-pollution}
+
+long_data %>%
+  group_by(Hour) %>%
+  summarise(CO = sd(CO)) %>%
+  ggplot(aes(x=as.factor(Hour), y=CO, color=as.factor(Hour))) + 
+  geom_point(size = 3) + 
+  labs(x = "Hour", y = "CO", title = "Desvios Standard de CO en Santiago") +
+  theme(legend.position= "none")
+
+```
+
+## Final Dataset
+
+```{r create-model-df}
+
+model_df <- long_data[long_data$Hour >= 3 & long_data$Hour < 9,]
+
+model_df %>%
+  subset(Hour >= 7 & Hour < 9) %>%
+  group_by(DateYYMMDD) %>%
+  summarise(CO = mean(CO)) %>%
+  ggplot(aes(x=factor(DateYYMMDD), y=CO)) + 
+  geom_point(size = 3, color = "lightblue") + 
+  geom_vline(xintercept = as.factor(190201), linetype = "dotted", color = "sienna", size=1) +
+  annotate("text", x= as.factor(190115), y=1.5, label="Implementación de Política", angle=90, size=3.5) + 
+  labs(x = "Date", y = "CO", title = "Registros diarios de CO durante las horas punta") +
+  scale_x_discrete( breaks = as.factor(c(180201, 190201, 200131))) +
+  theme(legend.position= "none")
+
+```
+
+## Join with Distance to Bikes
+
+
+```{r merge-bike-data}
+
+stations <- read.csv(str_glue('{params$datapath}weather_stations_info.csv'), header = TRUE, sep = ',')
+stations[1:10,]
+
+model_df <- merge(x = model_df, y = stations[,c('Station', 'TotalBikeDistance', 'N_BikesWeightedByDist')], all.x = TRUE, by= 'Station')
+
+```
+
+```{r mner}
+
+plot_hour <- clean_long_data %>% 
+  group_by(Year, Month, Day, Hour)            %>%
+  summarise(CO = mean(CO, na.rm = TRUE))
+plot_hour$index = seq(-nrow(plot_hour)/2,nrow(plot_hour)/2 -1, by=1)
+
+plot_day <- clean_long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month, Day)            %>%
+  summarise(CO = mean(CO))
+plot_day$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_day)))
+
+plot_month <- clean_long_data %>% 
+  drop_na(CO)   %>%
+  group_by(Year, Month)            %>%
+  summarise(CO = mean(CO))
+plot_month$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_month)))
+
+ggplot() + 
+  geom_point(data = plot_hour, aes( x = index , y = CO, color="Hourly Concentration"), size=2, shape=23) + 
+  geom_line(data = plot_day, aes( x = index , y = CO, color="Daily Average"), size=1, alpha=0.5) + 
+  geom_line(data = plot_month, aes( x = index , y = CO, color="Montlhy Average"), size=1, alpha=0.5) +
+  geom_vline(xintercept = 0, linetype = "dotted", color = "sienna", size=1) +
+  annotate("text", x=0 - 400, y=2.5, label="Implementación de Política", angle=90, size=3.5) + 
+  scale_color_manual(name = "Values", 
+                     breaks=c("Hourly Concentration", "Daily Average", "Montlhy Average"),
+                     values = c("Hourly Concentration" = "lightblue", "Daily Average" = "aquamarine", "Montlhy Average" = "firebrick")) +
+  labs(x = "Time since Implementation (hours)", y = "CO Concentration",
+       title = "Evolución de la concentración CO")
+
+```

@@ -1648,17 +1648,17 @@ tratamiento para todo el período ex post de la póliza y una serie de
 variables ficticias mensuales que capturen la fase de ajuste posterior a
 la implementación. Las ecuaciones de estimación bajo los dos enfoques
 están dadas por la sieguinte regresión:</p>
-<p><span class="math display">\[ y_t = α_0 + α_1 \cdot y_t^b + α_2 \cdot
-x_t + β \cdot T_t + \sum δ_t \cdot M_t + ε_t \]</span> donde <span
-class="math inline">\(y_t\)</span> es la concentración de CO en el
-período (hora) t en logs. Las variables explicativas son las
-siguientes:</p>
+<p><span class="math display">\[ y_t_s = α_0 + α_1 \cdot y_t^b + α_2
+\cdot x_t + β_1 \cdot T_t  +β_2 \cdot T_t \cdot d_s + \sum δ_t \cdot M_t
++ ε_t \]</span> donde <span class="math inline">\(y_t\)</span> es la
+concentración de CO en el período (hora) t en logs. Las variables
+explicativas son las siguientes:</p>
 <ul>
 <li><span class="math inline">\(y_t^b\)</span> es la contaminación de
 fondo antes de que se forme el pico, que corresponde a la contaminación
 nocturna (consideramos el promedio de 4 registros consecutivos de CO
 que, en promedio, mostraron la menor dispersión a lo largo de la
-muestra: 1–5 am;</li>
+muestra: 3–7 am;</li>
 <li><span class="math inline">\(x_t\)</span> es un vector que incluye
 efectos fijos (hora del día, día de la semana y mes del año), medidas
 horarias de variables meteorológicas como temperatura, humedad real,

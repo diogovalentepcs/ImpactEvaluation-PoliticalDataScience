@@ -1,0 +1,181 @@
+---
+title: "Untitled"
+author: "Soledad Araya"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Análisis de cluster
+
+## K-means
+
+* Es uno de los métodos más utilizados porque es fácil de entender.
+* Es usado para agrupar observaciones.
+* Usamos un número fijo de cluster, y basado en esto, se agrupan observaciones basadas en sus similitudes.
+
+## ¿Cómo funciona la función K-means?
+
+Donde se ajustan mejor los datos o las observaciones dentro de los grupos.
+
+```{r}
+library(factoextra) # Visualización y cálculos
+library(cluster)
+library(NbClust) # Cálculo de índices
+library(fpc) # Clusters con iteraciones
+library(dendextend)
+library(tidyverse)
+```
+
+Usaremos el paquete USArrests para ver los ejemplos:
+
+```{r}
+data("USArrests")
+head(USArrests)
+```
+
+Lo primero que queremos hacer, es escalar los datos. Esto es importante porque queremos que las distancias sean más balanceadas.
+
+```{r}
+df <- scale(USArrests)
+head(df)
+```
+
+Del paquete `fpc`:
+
+```{r}
+k1 <- kmeansruns(df, krange = 2, runs = 100)
+# Suma de errores al cuadrado entre clusters: la separación entre los clusters explica el 47.5% de los datos
+fviz_cluster(k1, data = df)
+```
+
+```{r}
+k2 <- kmeansruns(df, krange = 3, runs = 100)
+fviz_cluster(k2, data = df)
+```
+
+```{r}
+k3 <- kmeansruns(df, krange = 4, runs = 100)
+fviz_cluster(k3, data = df)
+```
+
+La distancia se calcula con `factoextra`. Calcularemos la matriz de distancia:
+
+```{r}
+d <- dist(df, method = "euclidean")
+```
+
+Evaluar el número de clusters:
+
+### Método de codos
+
+```{r}
+fviz_nbclust(df, kmeans, method = "wss") +
+  labs(subtitle = "Método codos")
+```
+
+### Método de brecha estadística
+
+```{r}
+fviz_nbclust(df, kmeans, method = "gap_stat") +
+  labs(subtitle = "Método de brecha estatística")
+```
+
+### Método de silueta promedio
+
+```{r}
+fviz_nbclust(df, kmeans, method = "silhouette") +
+  labs(subtitle = "Método de silueta promedio")
+```
+
+```{r}
+silueta <- silhouette(km.out$cluster, dist(df))
+fviz_silhouette(silueta)
+```
+
+# Método completo:
+
+```{r}
+res_nbclust <- NbClust(df, distance = "euclidean", min.nc = 2, max.nc = 7, method = "complete", index = "all")
+
+fviz_nbclust(res_nbclust) +
+  theme_minimal()
+```
+
+Ahora, podemos hacer un clusterboot para ver la estabilidad de los clusters que hemos seleccionado:
+
+```{r}
+cf2 <- clusterboot(df, B = 100, bootmethod = c("jitter", "boot"), clustermethod = kmeansCBI, krange = 2, seed = 999)
+
+print(cf2)
+```
+
+¿Qué opinamos del coeficiente de Jaccard?
+
+¿Es estable?
+
+```{r}
+cf3 <- clusterboot(df, B = 100, bootmethod = c("jitter", "boot"), clustermethod = kmeansCBI, krange = 3, seed = 999)
+
+print(cf3)
+```
+
+¿Y qué opinamos sobre esto?
+
+```{r}
+cf4 <- clusterboot(df, B = 100, bootmethod = c("jitter", "boot"), clustermethod = kmeansCBI, krange = 4, seed = 999)
+
+print(cf4)
+```
+
+```{r}
+USArrests %>% 
+  ggplot(aes(x = factor(k3$cluster), y = Murder, fill = factor(k3$cluster))) +
+  geom_boxplot() +
+  geom_point() +
+  theme_minimal()
+```
+
+Haremos un ejercicio de clustering preliminar con jerarquía
+
+```{r}
+d <- dist(df, method = "euclidean")
+```
+
+Esta matriz nos indica cuanto se parecen y en cuánto se diferencian los casos.
+
+```{r}
+hc1 <- hclust(d, method = "complete") # Promedio entre todos los puntos
+```
+
+```{r}
+hc2 <- hclust(d, method = "ward.D2") 
+```
+
+Hacemos el dendograma:
+
+```{r}
+plot(hc1, cex = 0.6, hang = -1)
+plot(hc2, cex = 0.6, hang = -1)
+```
+
+Ahora, veamos el método particional:
+
+```{r}
+km.out <- kmeans(df, 
+                 centers = 4,
+                 nstart = 100)
+km.out
+```
+
+¿Cómo visualizamos esto?
+
+```{r}
+km.cluster <- km.out$cluster
+```
+
+```{r}
+fviz_cluster(list(data=df, cluster = km.cluster)) +
+  theme_minimal()
+```
