@@ -95,7 +95,7 @@ df %>%
 
 ### Join with Distance to Bikes
 
-Los datos sobre la ubicación de las estaciones de bicicletas y el número de plazas se recuperaron manualmente a través de Google Maps, y se creó un excel con información sobre 119 estaciones (2 de las cuales están cerradas). La preparación posterior de los datos (por ejemplo, el cálculo de la distancia) se hizo en python. Es posible acceder al ![script creado aquí](https://github.com/diogovalentepcs/politcaldatascience/blob/main/_assets/DataPreparation.ipynb).
+Los datos sobre la ubicación de las estaciones de bicicletas y el número de plazas se recuperaron manualmente a través de Google Maps, y se creó un excel con información sobre 119 estaciones (2 de las cuales están cerradas). La preparación posterior de los datos (por ejemplo, el cálculo de la distancia) se hizo en python. Es posible acceder al [script creado aquí](https://github.com/diogovalentepcs/politcaldatascience/blob/main/_assets/DataPreparation.ipynb).
 
 Se creó una variable por estación meteorológica (AverageBikeDistance) que es el promedio de las distancias desde la estación meteorológica a todas las estaciones de bicicletas
 
