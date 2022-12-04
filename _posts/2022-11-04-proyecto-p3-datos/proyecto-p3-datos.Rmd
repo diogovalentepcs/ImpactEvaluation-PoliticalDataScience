@@ -557,13 +557,16 @@ sum(is.na(clean_wide_data))
 
 clean_wide_data<-clean_wide_data[,1:33]
 
+write.csv(clean_wide_data, str_glue("{params$datapath}clean_wide_data.csv"), row.names = FALSE)
+
+clean_wide_data <- read.csv(str_glue('{params$datapath}clean_wide_data.csv'), header = TRUE, sep = ',')
+
 clean_long_data <- clean_wide_data %>% 
-  select(-contains("SO2")) %>%
   tidyr::pivot_longer(
    cols = contains("_"), 
    names_to = c(".value", "Station"), 
    names_sep = "_") %>%
-  extract(DateYYMMDD, c("Year","Month", "Day"), "(..)(..)(..)", convert=TRUE, remove = FALSE) %>%
+  tidyr::extract(DateYYMMDD, c("Year","Month", "Day"), "(..)(..)(..)", convert=TRUE, remove = FALSE) %>%
   rename("Hour" = "TimeHHMM") %>% # let's take this chance to rename the column 
   mutate(Hour = Hour/100) # There's only hourly verifiaction
 
@@ -572,7 +575,6 @@ clean_long_data[1:10,]
 ```
 
 ```{r save-data-2}
-write.csv(clean_wide_data,str_glue("{params$datapath}clean_wide_data.csv"), row.names = FALSE)
 write.csv(clean_long_data,str_glue("{params$datapath}clean_long_data.csv"), row.names = FALSE)
 ```
 

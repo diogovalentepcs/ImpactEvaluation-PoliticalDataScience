@@ -31,12 +31,12 @@ library(tidyr)    # tidying data
 library(naniar)   # missing data visualizations
 library(ggplot2)  # graphs
 library(ggbreak)
+library(texreg)
 ```
 
 
 ```{r load-data}
 
-wide_data <- read.csv(str_glue('{params$datapath}clean_wide_data.csv'), header = TRUE, sep = ',')
 long_data <- read.csv(str_glue('{params$datapath}clean_long_data.csv'), header = TRUE, sep = ',')
 
 long_data[1:10,]
@@ -75,11 +75,11 @@ long_data %>%
 
 ## Final Dataset
 
-```{r create-model-df}
+```{r start-model-df}
 
-model_df <- long_data[long_data$Hour >= 3 & long_data$Hour < 9,]
+df <- long_data[long_data$Hour >= 3 & long_data$Hour < 9,]
 
-model_df %>%
+df %>%
   subset(Hour >= 7 & Hour < 9) %>%
   group_by(DateYYMMDD) %>%
   summarise(CO = mean(CO)) %>%
@@ -93,47 +93,137 @@ model_df %>%
 
 ```
 
-## Join with Distance to Bikes
+### Join with Distance to Bikes
 
+Los datos sobre la ubicación de las estaciones de bicicletas y el número de plazas se recuperaron manualmente a través de Google Maps, y se creó un excel con información sobre 119 estaciones (2 de las cuales están cerradas). La preparación posterior de los datos (por ejemplo, el cálculo de la distancia) se hizo en python. Es posible acceder al ![script creado aquí](https://github.com/diogovalentepcs/politcaldatascience/blob/main/_assets/DataPreparation.ipynb).
+
+Se creó una variable por estación meteorológica (AverageBikeDistance) que es el promedio de las distancias desde la estación meteorológica a todas las estaciones de bicicletas
 
 ```{r merge-bike-data}
 
 stations <- read.csv(str_glue('{params$datapath}weather_stations_info.csv'), header = TRUE, sep = ',')
-stations[1:10,]
-
-model_df <- merge(x = model_df, y = stations[,c('Station', 'TotalBikeDistance', 'N_BikesWeightedByDist')], all.x = TRUE, by= 'Station')
+df <- merge(x = df, y = stations[,c('Station', 'AverageBikeDistance')], all.x = TRUE, by= 'Station')
 
 ```
 
-```{r mner}
+### Create all model variables
 
-plot_hour <- clean_long_data %>% 
-  group_by(Year, Month, Day, Hour)            %>%
-  summarise(CO = mean(CO, na.rm = TRUE))
-plot_hour$index = seq(-nrow(plot_hour)/2,nrow(plot_hour)/2 -1, by=1)
+El modelo siegue esta regresión:
 
-plot_day <- clean_long_data %>% 
-  drop_na(CO)   %>%
-  group_by(Year, Month, Day)            %>%
-  summarise(CO = mean(CO))
-plot_day$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_day)))
+$$ y_{ts} = α_0 + α_1 \cdot y_t^b + α_2 \cdot x_t + β_1 \cdot T_t  +β_2 \cdot T_t \cdot d_s + \sum δ_t \cdot M_t + ε_t $$
 
-plot_month <- clean_long_data %>% 
-  drop_na(CO)   %>%
-  group_by(Year, Month)            %>%
-  summarise(CO = mean(CO))
-plot_month$index = seq(-nrow(plot_hour)/2, nrow(plot_hour)/2 -1, by = round(nrow(plot_hour)/nrow(plot_month)))
+donde $y_t$ es la concentración de CO en el período (hora) t y en la estación meteorologica s, en logs. Las variables explicativas son las siguientes:
 
-ggplot() + 
-  geom_point(data = plot_hour, aes( x = index , y = CO, color="Hourly Concentration"), size=2, shape=23) + 
-  geom_line(data = plot_day, aes( x = index , y = CO, color="Daily Average"), size=1, alpha=0.5) + 
-  geom_line(data = plot_month, aes( x = index , y = CO, color="Montlhy Average"), size=1, alpha=0.5) +
-  geom_vline(xintercept = 0, linetype = "dotted", color = "sienna", size=1) +
-  annotate("text", x=0 - 400, y=2.5, label="Implementación de Política", angle=90, size=3.5) + 
-  scale_color_manual(name = "Values", 
-                     breaks=c("Hourly Concentration", "Daily Average", "Montlhy Average"),
-                     values = c("Hourly Concentration" = "lightblue", "Daily Average" = "aquamarine", "Montlhy Average" = "firebrick")) +
-  labs(x = "Time since Implementation (hours)", y = "CO Concentration",
-       title = "Evolución de la concentración CO")
+* $y_t^b$ es la contaminación de fondo antes de que se forme el pico, que corresponde a la contaminación nocturna (consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 3–7 am;
+* $x_t$ es un vector que incluye efectos fijos (hora del día, día de la semana y mes del año), medidas horarias de variables meteorológicas como temperatura, humedad real, velocidad del viento. También incluimos registros de SO2 como variable explicativa, los cuales están fácilmente disponibles en las mismas estaciones de monitoreo.
+
+Dado que el SO2 está principalmente relacionado con la actividad industrial y la generación de energía, sirve como un control de fenómenos meteorológicos comunes a todos los contaminantes, pero que no son capturados en su totalidad por nuestras variables climáticas, como las inversiones térmicas (Molina y Molina, 2002).
+
+El efecto del sistema de Bike Itaú se captura con:
+
+* $T_t$, dummy que toma el valor de 1 después de la implementación;
+* $d_s$, indica el promedio de las distancias de la estación meteorologica s a las estaciones de bike itaú
+* $M_t$, un indicador de mes que cubre varios meses después de la implementación (hasta 12);
+
+El efecto de la implementación de bicicletas compartidas sería $β + δ_1$ a corto plazo (es decir, el primer mes) y $β$ a largo plazo. Finalmente, $ε_t$ es el término de error. Cada observación es una hora en que se detectó la concentración de CO.
+
+
+Así que es necesario:
+1. Que las observaciones (lineas) sean solo observaciones de horas de punta, para todas las estaciones meteorologicas
+2. Crear la variable $y_t^b$ (Background_CO) siendo el promedio contaminacion para las horas 3-7 am para cada dia y estación meteorogica
+3. Organizar el vector $x_t$ (hora del día, día de la semana, mes del año, temperatura, humedad real, velocidad del viento, y SO2)
+4. Crear la variable de tratamiento $T_t$, igual a 1 para todas las observaciones posteriors al implementación
+5. Creare Variable de interacción $T_t \cdot d_s$
+6. Crear el vector $M_t$, de variables dummy para cada mes después de la implementación
+
+```{r final-dataset}
+
+# 1. Restrict observations
+model_df <- df[df$Hour >= 7 & df$Hour < 9,]
+
+# 2. Background Pollution
+aux <- df[df$Hour >= 3 & df$Hour < 7,] %>%
+  group_by(DateYYMMDD) %>%
+  summarise(Background_CO = mean(CO))
+model_df <- merge(x = model_df, y = aux, all.x = TRUE, by = 'DateYYMMDD')
+
+# 3. Controls
+#Controls are all there (Month, Day, Hour, Hum, WindSpeed, Temp)
+
+# 4. Treatemnt Variable
+model_df$T <- ifelse(model_df$DateYYMMDD>=190201, 1, 0)
+
+# 5. Distance Interaction
+model_df$T_Dist <- model_df$T * model_df$AverageBikeDistance
+
+# 6. Monthly Binaries
+model_df$Month_1 <- ifelse(model_df$T==1 & model_df$Month==2, 1, 0)
+model_df$Month_2 <- ifelse(model_df$T==1 & model_df$Month==3, 1, 0)
+model_df$Month_3 <- ifelse(model_df$T==1 & model_df$Month==4, 1, 0)
+model_df$Month_4 <- ifelse(model_df$T==1 & model_df$Month==5, 1, 0)
+model_df$Month_5 <- ifelse(model_df$T==1 & model_df$Month==6, 1, 0)
+model_df$Month_6 <- ifelse(model_df$T==1 & model_df$Month==7, 1, 0)
+model_df$Month_7 <- ifelse(model_df$T==1 & model_df$Month==8, 1, 0)
+model_df$Month_8 <- ifelse(model_df$T==1 & model_df$Month==9, 1, 0)
+model_df$Month_9 <- ifelse(model_df$T==1 & model_df$Month==10, 1, 0)
+model_df$Month_10 <- ifelse(model_df$T==1 & model_df$Month==11, 1, 0)
+model_df$Month_11 <- ifelse(model_df$T==1 & model_df$Month==12, 1, 0)
+model_df$Month_12 <- ifelse(model_df$T==1 & model_df$Month==1, 1, 0)
+
+model_df[1:5,]
+```
+
+## Ejecución del Modelo
+
+En primer lugar, analizaremos el impacto de la reestructuración de Bike Itaú sin controlar los valores de SO2, ya que eso reduce el número de estaciones a analizar (sólo 4 estaciones tienen información fiable sobre el SO2). Veremos si el control de la distancia a las estaciones de bicicletas también afecta a la evaluación de forma significativa.
+
+```{r regression-model-1_2}
+
+regression_df <- model_df %>%
+  select(-c('DateYYMMDD', 'Station', 'AverageBikeDistance')) %>%
+  mutate(CO = log(CO))
+
+# Model 1 - not controlled by bicycle info neither SO2
+model_1 <- lm(CO ~ ., data = regression_df %>%
+                                select(-c('T_Dist', 'SO2')))
+
+# Model 2 - not controlled by SO2
+model_2 <- lm(CO ~ ., data = regression_df %>%
+                                select(-c('SO2')))
+
+models <- list(model_1, model_2)
+
+screenreg(models)
 
 ```
+
+El modelo 1 no controla las distancias a las estaciones, y el modelo 2 sí.
+Lo primero que llama la atención es que, en contra de lo que sería el objetivo, la reestructuración parece aumentar la concentración de CO en las horas punta en un 67% (modelo 1) y un 92% (modelo 2), como observable en el coeficiente de T, ambos significativos al 1%. Estos valores son muy altos.
+Además, parece que el factor temporal tiene un impacto bastante significativo, ya que tanto el año como el mes (después de la reestructuración) tienen coeficientes elevados. Lo más llamativo es que estos coeficientes son negativos, lo que demuestra que sin ningún cambio en el comportamiento de las personas, la concentración de CO disminuiría de forma natural.
+Con estos resultados, se espera que haya una gran influencia de factores externos no controlados, que se confunden con el momento de la reestructuración.
+
+A continuación, controlamos el SO2 (eliminando las estaciones en las que no se registra el SO2):
+
+```{r regression-model-2_3}
+
+# Model 3 - not controlled by bicycle info (less observations)
+model_3 <- lm(CO ~ ., data = regression_df %>%
+                                select(-c('T_Dist')) %>% 
+                                filter(!is.na('SO2')))
+
+# Model 4 - controlled by everything (less observations)
+model_4 <- lm(CO ~ ., data = regression_df %>% 
+                                filter(!is.na('SO2')))
+
+models <- list(model_3, model_4)
+
+screenreg(models)
+```
+
+De nuevo, el modelo 1 no controla las distancias a las estaciones, y el modelo 2 sí.
+La relevancia de controlar este gas es notable porque su coeficiente es significativo al 1% y cambia (aumenta) el valor del efecto de la reestructuración (coeficiente de T), que siegue siendo significativo. 
+
+## Discussión de Resultados
+
+
+
