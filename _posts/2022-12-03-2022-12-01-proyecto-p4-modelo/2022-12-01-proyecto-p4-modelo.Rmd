@@ -5,7 +5,7 @@ description: |
 author:
   - name: Diogo Polónia
     url: https://diogovalentepcs.github.io/website/
-date: 2022-11-04 
+date: 2022-12-03 
 output:
   distill::distill_article:
     self_contained: false
@@ -225,5 +225,15 @@ La relevancia de controlar este gas es notable porque su coeficiente es signific
 
 ## Discussión de Resultados
 
+Como se indicó anteriormente, los resultados implican que la reestructuración de Bike Itaú en realidad contribuyó al aumento de las concentraciones de CO en horas de punta en Santiago. Además de eso, parece que las estaciones meteorológicas más distantes a las estaciones de bicicletas reportan concentraciones más bajas.
+
+Aunque esto es muy probable debido a factores externos confundidos con el tiempo de implementación y la ubicación de las estaciones de bicicletas, propongo dos razones de por qué se puede ver este efecto:
+
+1. Los viajes en bicicleta no están sustituyendo a los viajes en coche en horas de punta, sino que podrían estar sustituyendo el transporte público o los desplazamientos a pie, en momentods de ocio. Este razonamiento es desarrollado más adelante por
+2. El menor interés por el transporte público en horas de ocio, podría contribuir a un mayor uso del coche en horas de punta. Las personas pueden desanimarse a pagar costos fijos como la tarjeta bip o tener que comprar viajes para el transporte público por horas de punta si sienten que no los usarán de todos modos en los momentos de ocio, porque ahora tienen Bike Itaú.
+
+Este trabajo tiene grandes limitaciones, siendo la principal la falta de un contrafactual confiable (Santiago sin la nueva estructura de Bike Itaú, al mismo tiempo). Esto se ve mitigado por los controles empíricos agregados al modelo, pero también deberíamos estudiar un contrafactual. Gallego et al. (2013) propone utilizar una pequeña ciudad de Chile como contrafactual debido a sus tendencias similares de CO. Podríamos construir un modelo de Diferencia en Diferencias que nos permitiría controlar los efectos de los factores externos.
+
+Apesar de todo, este proceso empírico robusto y fuertemente apoyado por Gallego et al. (2013), permite ter confiança no sense do impact das variáveis, e é possível afirmar, pelo menos, que o efeito de sistemas de bicicletas partilhadas não contribuem para a diminuição da utilização de carros (em horas de ponta).
 
 

@@ -94,8 +94,8 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
 <!--  https://schema.org/Article -->
-<meta property="article:published" itemprop="datePublished" content="2022-11-04"/>
-<meta property="article:created" itemprop="dateCreated" content="2022-11-04"/>
+<meta property="article:published" itemprop="datePublished" content="2022-12-03"/>
+<meta property="article:created" itemprop="dateCreated" content="2022-12-03"/>
 <meta name="article:author" content="Diogo Polónia"/>
 
 <!--  https://developers.facebook.com/docs/sharing/webmasters#markup -->
@@ -114,7 +114,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--radix_placeholder_rmarkdown_metadata-->
 
 <script type="text/json" id="radix-rmarkdown-metadata">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","params"]}},"value":[{"type":"character","attributes":{},"value":["[Proyecto | Modelo] Creación del Modelo y Resultados"]},{"type":"character","attributes":{},"value":["En esta publicación se crea el modelo de impacto causal y se analizan los resultados."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Diogo Polónia"]},{"type":"character","attributes":{},"value":["https://diogovalentepcs.github.io/website/"]}]}]},{"type":"character","attributes":{},"value":["2022-11-04"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["datapath","start_date","end_date"]}},"value":[{"type":"character","attributes":{},"value":["../../_assets/Data/"]},{"type":"integer","attributes":{},"value":[180201]},{"type":"integer","attributes":{},"value":[200201]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["title","description","author","date","output","params"]}},"value":[{"type":"character","attributes":{},"value":["[Proyecto | Modelo] Creación del Modelo y Resultados"]},{"type":"character","attributes":{},"value":["En esta publicación se crea el modelo de impacto causal y se analizan los resultados."]},{"type":"list","attributes":{},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["name","url"]}},"value":[{"type":"character","attributes":{},"value":["Diogo Polónia"]},{"type":"character","attributes":{},"value":["https://diogovalentepcs.github.io/website/"]}]}]},{"type":"character","attributes":{},"value":["2022-12-03"]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["distill::distill_article"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["self_contained"]}},"value":[{"type":"logical","attributes":{},"value":[false]}]}]},{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["datapath","start_date","end_date"]}},"value":[{"type":"character","attributes":{},"value":["../../_assets/Data/"]},{"type":"integer","attributes":{},"value":[180201]},{"type":"integer","attributes":{},"value":[200201]}]}]}
 </script>
 <!--/radix_placeholder_rmarkdown_metadata-->
   
@@ -2096,7 +2096,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!--radix_placeholder_front_matter-->
 
 <script id="distill-front-matter" type="text/json">
-{"title":"[Proyecto | Modelo] Creación del Modelo y Resultados","description":"En esta publicación se crea el modelo de impacto causal y se analizan los resultados.","authors":[{"author":"Diogo Polónia","authorURL":"https://diogovalentepcs.github.io/website/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-11-04T00:00:00.000-03:00","citationText":"Polónia, 2022"}
+{"title":"[Proyecto | Modelo] Creación del Modelo y Resultados","description":"En esta publicación se crea el modelo de impacto causal y se analizan los resultados.","authors":[{"author":"Diogo Polónia","authorURL":"https://diogovalentepcs.github.io/website/","affiliation":"&nbsp;","affiliationURL":"#","orcidID":""}],"publishedDate":"2022-12-03T00:00:00.000-03:00","citationText":"Polónia, 2022"}
 </script>
 
 <!--/radix_placeholder_front_matter-->
@@ -2130,7 +2130,7 @@ analizan los resultados.</p></p>
   Diogo Polónia <a href="https://diogovalentepcs.github.io/website/"
 class="uri">https://diogovalentepcs.github.io/website/</a> 
   
-<br/>2022-11-04
+<br/>2022-12-03
 </div>
 
 <div class="d-article">
@@ -2535,6 +2535,40 @@ coeficiente es significativo al 1% y cambia (aumenta) el valor del
 efecto de la reestructuración (coeficiente de T), que siegue siendo
 significativo.</p>
 <h2 id="discussión-de-resultados">Discussión de Resultados</h2>
+<p>Como se indicó anteriormente, los resultados implican que la
+reestructuración de Bike Itaú en realidad contribuyó al aumento de las
+concentraciones de CO en horas de punta en Santiago. Además de eso,
+parece que las estaciones meteorológicas más distantes a las estaciones
+de bicicletas reportan concentraciones más bajas.</p>
+<p>Aunque esto es muy probable debido a factores externos confundidos
+con el tiempo de implementación y la ubicación de las estaciones de
+bicicletas, propongo dos razones de por qué se puede ver este
+efecto:</p>
+<ol type="1">
+<li>Los viajes en bicicleta no están sustituyendo a los viajes en coche
+en horas de punta, sino que podrían estar sustituyendo el transporte
+público o los desplazamientos a pie, en momentods de ocio. Este
+razonamiento es desarrollado más adelante por</li>
+<li>El menor interés por el transporte público en horas de ocio, podría
+contribuir a un mayor uso del coche en horas de punta. Las personas
+pueden desanimarse a pagar costos fijos como la tarjeta bip o tener que
+comprar viajes para el transporte público por horas de punta si sienten
+que no los usarán de todos modos en los momentos de ocio, porque ahora
+tienen Bike Itaú.</li>
+</ol>
+<p>Este trabajo tiene grandes limitaciones, siendo la principal la falta
+de un contrafactual confiable (Santiago sin la nueva estructura de Bike
+Itaú, al mismo tiempo). Esto se ve mitigado por los controles empíricos
+agregados al modelo, pero también deberíamos estudiar un contrafactual.
+Gallego et al. (2013) propone utilizar una pequeña ciudad de Chile como
+contrafactual debido a sus tendencias similares de CO. Podríamos
+construir un modelo de Diferencia en Diferencias que nos permitiría
+controlar los efectos de los factores externos.</p>
+<p>Apesar de todo, este proceso empírico robusto y fuertemente apoyado
+por Gallego et al. (2013), permite ter confiança no sense do impact das
+variáveis, e é possível afirmar, pelo menos, que o efeito de sistemas de
+bicicletas partilhadas não contribuem para a diminuição da utilização de
+carros (em horas de ponta).</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
