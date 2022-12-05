@@ -55,7 +55,7 @@ Las horas punta se definen como las dos horas consecutivas que marcan de media l
 
 ## Contaminación de Fundo
 
-Para el valor de contaminación de fundo consideramos el promedio de 4 registros consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 3–7 am
+Para el valor de contaminación de fundo consideramos el promedio de 4 registros nocturnos consecutivos de CO que, en promedio, mostraron la menor dispersión a lo largo de la muestra: 3–7 am (antes de la hora de punta)
 
 ```{r background-pollution}
 
