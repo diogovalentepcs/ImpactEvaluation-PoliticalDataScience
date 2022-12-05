@@ -1572,8 +1572,9 @@ de media las lecturas más altas en los dos años de la muestra.
 Graficamente se puede observar que estas horas son de 7-9 am.</p>
 <h2 id="contaminación-de-fundo">Contaminación de Fundo</h2>
 <p>Para el valor de contaminación de fundo consideramos el promedio de 4
-registros consecutivos de CO que, en promedio, mostraron la menor
-dispersión a lo largo de la muestra: 3–7 am</p>
+registros nocturnos consecutivos de CO que, en promedio, mostraron la
+menor dispersión a lo largo de la muestra: 3–7 am (antes de la hora de
+punta)</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>long_data</span> <span class='op'><a href='https://magrittr.tidyverse.org/reference/pipe.html'>%&gt;%</a></span></span>
@@ -1666,19 +1667,24 @@ primer mes) y <span class="math inline">\(β\)</span> a largo plazo.
 Finalmente, <span class="math inline">\(ε_t\)</span> es el término de
 error. Cada observación es una hora en que se detectó la concentración
 de CO.</p>
-<p>Así que es necesario: 1. Que las observaciones (lineas) sean solo
-observaciones de horas de punta, para todas las estaciones
-meteorologicas 2. Crear la variable <span
-class="math inline">\(y_t^b\)</span> (Background_CO) siendo el promedio
-contaminacion para las horas 3-7 am para cada dia y estación meteorogica
-3. Organizar el vector <span class="math inline">\(x_t\)</span> (hora
+<p>Así que es necesario:</p>
+<ol type="1">
+<li>Que las observaciones (lineas) sean solo observaciones de horas de
+punta, para todas las estaciones meteorologicas</li>
+<li>Crear la variable <span class="math inline">\(y_t^b\)</span>
+(Background_CO) siendo el promedio contaminacion para las horas 3-7 am
+para cada dia y estación meteorogica</li>
+<li>Organizar el vector <span class="math inline">\(x_t\)</span> (hora
 del día, día de la semana, mes del año, temperatura, humedad real,
-velocidad del viento, y SO2) 4. Crear la variable de tratamiento <span
+velocidad del viento, y SO2)</li>
+<li>Crear la variable de tratamiento <span
 class="math inline">\(T_t\)</span>, igual a 1 para todas las
-observaciones posteriors al implementación 5. Creare Variable de
-interacción <span class="math inline">\(T_t \cdot d_s\)</span> 6. Crear
-el vector <span class="math inline">\(M_t\)</span>, de variables dummy
-para cada mes después de la implementación</p>
+observaciones posteriors al implementación</li>
+<li>Creare Variable de interacción <span class="math inline">\(T_t \cdot
+d_s\)</span></li>
+<li>Crear el vector <span class="math inline">\(M_t\)</span>, de
+variables dummy para cada mes después de la implementación</li>
+</ol>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># 1. Restrict observations</span></span>

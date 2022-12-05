@@ -125,6 +125,7 @@ El efecto de la implementación de bicicletas compartidas sería $β + δ_1$ a c
 
 
 Así que es necesario:
+
 1. Que las observaciones (lineas) sean solo observaciones de horas de punta, para todas las estaciones meteorologicas
 2. Crear la variable $y_t^b$ (Background_CO) siendo el promedio contaminacion para las horas 3-7 am para cada dia y estación meteorogica
 3. Organizar el vector $x_t$ (hora del día, día de la semana, mes del año, temperatura, humedad real, velocidad del viento, y SO2)
