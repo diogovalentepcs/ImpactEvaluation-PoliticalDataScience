@@ -2268,11 +2268,12 @@ tratamiento para todo el período ex post de la póliza y una serie de
 variables ficticias mensuales que capturen la fase de ajuste posterior a
 la implementación. Las ecuaciones de estimación bajo los dos enfoques
 están dadas por la sieguinte regresión:</p>
-<p><span class="math display">\[ y_t_s = α_0 + α_1 \cdot y_t^b + α_2
+<p><span class="math display">\[ y_{ts} = α_0 + α_1 \cdot y_t^b + α_2
 \cdot x_t + β_1 \cdot T_t  +β_2 \cdot T_t \cdot d_s + \sum δ_t \cdot M_t
 + ε_t \]</span> donde <span class="math inline">\(y_t\)</span> es la
-concentración de CO en el período (hora) t en logs. Las variables
-explicativas son las siguientes:</p>
+concentración de CO en el período (hora) t y en la estación
+meteorologica s, en logs. Las variables explicativas son las
+siguientes:</p>
 <ul>
 <li><span class="math inline">\(y_t^b\)</span> es la contaminación de
 fondo antes de que se forme el pico, que corresponde a la contaminación
@@ -2295,6 +2296,9 @@ las inversiones térmicas (Molina y Molina, 2002).</p>
 <ul>
 <li><span class="math inline">\(T_t\)</span>, dummy que toma el valor de
 1 después de la implementación;</li>
+<li><span class="math inline">\(d_s\)</span>, indica el promedio de las
+distancias de la estación meteorologica s a las estaciones de bike
+itaú</li>
 <li><span class="math inline">\(M_t\)</span>, un indicador de mes que
 cubre varios meses después de la implementación (hasta 12);</li>
 </ul>

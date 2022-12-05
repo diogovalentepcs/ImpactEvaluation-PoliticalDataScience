@@ -1514,11 +1514,6 @@ class="uri">https://diogovalentepcs.github.io/website/</a>
 </div>
 
 <div class="d-article">
-<p>Distill is a publication format for scientific and technical writing,
-native to the web.</p>
-<p>Learn more about using Distill at <a
-href="https://rstudio.github.io/distill"
-class="uri">https://rstudio.github.io/distill</a>.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://stringr.tidyverse.org'>stringr</a></span><span class='op'>)</span>  <span class='co'># adding variable sto a string</span></span>
@@ -1591,7 +1586,7 @@ dispersión a lo largo de la muestra: 3–7 am</p>
 </div>
 <p><img src="2022-12-01-proyecto-p4-modelo_files/figure-html5/background-pollution-1.png" width="624" /></p>
 </div>
-<h2 id="final-dataset">Final Dataset</h2>
+<h2 id="dataset-final">Dataset Final</h2>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='va'>long_data</span><span class='op'>[</span><span class='va'>long_data</span><span class='op'>$</span><span class='va'>Hour</span> <span class='op'>&gt;=</span> <span class='fl'>3</span> <span class='op'>&amp;</span> <span class='va'>long_data</span><span class='op'>$</span><span class='va'>Hour</span> <span class='op'>&lt;</span> <span class='fl'>9</span>,<span class='op'>]</span></span>
@@ -1610,7 +1605,8 @@ dispersión a lo largo de la muestra: 3–7 am</p>
 </div>
 <p><img src="2022-12-01-proyecto-p4-modelo_files/figure-html5/start-model-df-1.png" width="624" /></p>
 </div>
-<h3 id="join-with-distance-to-bikes">Join with Distance to Bikes</h3>
+<h3 id="unión-con-la-distancia-a-las-bicicletas">Unión con la distancia
+a las bicicletas</h3>
 <p>Los datos sobre la ubicación de las estaciones de bicicletas y el
 número de plazas se recuperaron manualmente a través de Google Maps, y
 se creó un excel con información sobre 119 estaciones (2 de las cuales
@@ -1627,7 +1623,8 @@ todas las estaciones de bicicletas</p>
 <span><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>df</span>, y <span class='op'>=</span> <span class='va'>stations</span><span class='op'>[</span>,<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Station'</span>, <span class='st'>'AverageBikeDistance'</span><span class='op'>)</span><span class='op'>]</span>, all.x <span class='op'>=</span> <span class='cn'>TRUE</span>, by<span class='op'>=</span> <span class='st'>'Station'</span><span class='op'>)</span></span></code></pre>
 </div>
 </div>
-<h3 id="create-all-model-variables">Create all model variables</h3>
+<h3 id="creación-de-todas-las-variables-del-modelo">Creación de todas
+las variables del modelo</h3>
 <p>El modelo siegue esta regresión:</p>
 <p><span class="math display">\[ y_{ts} = α_0 + α_1 \cdot y_t^b + α_2
 \cdot x_t + β_1 \cdot T_t  +β_2 \cdot T_t \cdot d_s + \sum δ_t \cdot M_t
@@ -1928,7 +1925,7 @@ efecto:</p>
 <li>Los viajes en bicicleta no están sustituyendo a los viajes en coche
 en horas de punta, sino que podrían estar sustituyendo el transporte
 público o los desplazamientos a pie, en momentods de ocio. Este
-razonamiento es desarrollado más adelante por</li>
+razonamiento es desarrollado más adelante por Ricci (2025).</li>
 <li>El menor interés por el transporte público en horas de ocio, podría
 contribuir a un mayor uso del coche en horas de punta. Las personas
 pueden desanimarse a pagar costos fijos como la tarjeta bip o tener que
@@ -1941,14 +1938,55 @@ de un contrafactual confiable (Santiago sin la nueva estructura de Bike
 Itaú, al mismo tiempo). Esto se ve mitigado por los controles empíricos
 agregados al modelo, pero también deberíamos estudiar un contrafactual.
 Gallego et al. (2013) propone utilizar una pequeña ciudad de Chile como
-contrafactual debido a sus tendencias similares de CO. Podríamos
-construir un modelo de Diferencia en Diferencias que nos permitiría
-controlar los efectos de los factores externos.</p>
+contrafactual debido a sus tendencias similares de CO. Con eses datos
+podríamos construir un modelo de Diferencia en Diferencias que nos
+permitiría controlar los efectos de los factores externos.</p>
 <p>Apesar de todo, este proceso empírico robusto y fuertemente apoyado
 por Gallego et al. (2013), permite ter confiança no sense do impact das
 variáveis, e é possível afirmar, pelo menos, que o efeito de sistemas de
 bicicletas partilhadas não contribuem para a diminuição da utilização de
 carros (em horas de ponta).</p>
+<h2 id="observaciones-y-comentario-del-curso">Observaciones y Comentario
+del Curso</h2>
+<p>Para este curso, el objetivo era ser capaz de plantear un problema o
+cuestión de interés personal relacionado con un fenómeno político; y
+establecer una hipótesis causal.</p>
+<p>Partiendo de una fuerte revisión teórica y literaria, se estudió el
+impacto que tuvo la implementación, por parte de Muincípio y la empresa
+Bike Itaú, del nuevo sistema de bicicletas compartidas para los
+residentes y visitantes de Santiago, con planes mensuales de menos de 4
+000 pesos.</p>
+<p>La hipótesis inicial era que el uso compartido de bicicletas tiene
+una débil relación con la reducción del uso del auto. Los resultados
+fueron aún más sorprendentes al señalar una relación negativa entre la
+implantación y el uso del auto (evaluado a través de la concentración de
+CO). Los resultados son significativos y pueden explicarse, por ejemplo,
+por el menor incentivo para utilizar el transporte público. Sin embargo,
+es probable que el modelo se vea afectado por factores externos no
+controlados.</p>
+<p>Durante el curso también se enseñaron diversas técnicas de análisis y
+medición que, debido a la forma en que estaba planteado el problema, no
+era necesario (ni sería adecuado) ocupar (por ejemplo, variables
+latentes, clustering, pca y analisis factorial).</p>
+<p>Estas técnicas podrían utilizarse en el futuro si se quisiera
+estudiar la heterogeneidad de los efectos calculados entre sectores
+demográficos. Para ello, sería necesario cruzar los datos actuales con
+los demográficos. Aun así, se considera que este trabajo ha logrado
+alcanzar los objetivos previstos e incluso puede contribuir a la
+investigación en este ámbito.</p>
+<p>Gracias a Soledad Araya, profesora del curso, por los conocimientos
+transmitidos y la apertura mostrada a los alumnos de intercambio.</p>
+<h2 id="referencias">Referencias</h2>
+<ul>
+<li>Miriam Ricci, 2015. Bike sharing: A review of evidence on impacts
+and processes of implementation and operation, Research in
+Transportation Business &amp; Management, Volume 15, Pages 28-38, ISSN
+2210-5395, <a href="https://doi.org/10.1016/j.rtbm.2015.03.003"
+class="uri">https://doi.org/10.1016/j.rtbm.2015.03.003</a>.</li>
+<li>F. Gallego, JP. Montero, C.Salas, 2013. The effect of transport
+policies on car use: Evidence from Latin American cities. Journal of
+Public Economics 107 (2013) 47–62</li>
+</ul>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->

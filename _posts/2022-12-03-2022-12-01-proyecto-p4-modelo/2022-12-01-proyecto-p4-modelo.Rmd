@@ -20,10 +20,6 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Distill is a publication format for scientific and technical writing, native to the web.
-
-Learn more about using Distill at <https://rstudio.github.io/distill>.
-
 ```{r packages, output=FALSE}
 library(stringr)  # adding variable sto a string
 library(dplyr)    # manipulate dataframes
@@ -73,7 +69,7 @@ long_data %>%
 
 ```
 
-## Final Dataset
+## Dataset Final
 
 ```{r start-model-df}
 
@@ -93,7 +89,7 @@ df %>%
 
 ```
 
-### Join with Distance to Bikes
+### Unión con la distancia a las bicicletas
 
 Los datos sobre la ubicación de las estaciones de bicicletas y el número de plazas se recuperaron manualmente a través de Google Maps, y se creó un excel con información sobre 119 estaciones (2 de las cuales están cerradas). La preparación posterior de los datos (por ejemplo, el cálculo de la distancia) se hizo en python. Es posible acceder al [script creado aquí](https://github.com/diogovalentepcs/politcaldatascience/blob/main/_assets/DataPreparation.ipynb).
 
@@ -106,7 +102,7 @@ df <- merge(x = df, y = stations[,c('Station', 'AverageBikeDistance')], all.x = 
 
 ```
 
-### Create all model variables
+### Creación de todas las variables del modelo
 
 El modelo siegue esta regresión:
 
@@ -229,11 +225,30 @@ Como se indicó anteriormente, los resultados implican que la reestructuración 
 
 Aunque esto es muy probable debido a factores externos confundidos con el tiempo de implementación y la ubicación de las estaciones de bicicletas, propongo dos razones de por qué se puede ver este efecto:
 
-1. Los viajes en bicicleta no están sustituyendo a los viajes en coche en horas de punta, sino que podrían estar sustituyendo el transporte público o los desplazamientos a pie, en momentods de ocio. Este razonamiento es desarrollado más adelante por
+1. Los viajes en bicicleta no están sustituyendo a los viajes en coche en horas de punta, sino que podrían estar sustituyendo el transporte público o los desplazamientos a pie, en momentods de ocio. Este razonamiento es desarrollado más adelante por Ricci (2025).
 2. El menor interés por el transporte público en horas de ocio, podría contribuir a un mayor uso del coche en horas de punta. Las personas pueden desanimarse a pagar costos fijos como la tarjeta bip o tener que comprar viajes para el transporte público por horas de punta si sienten que no los usarán de todos modos en los momentos de ocio, porque ahora tienen Bike Itaú.
 
-Este trabajo tiene grandes limitaciones, siendo la principal la falta de un contrafactual confiable (Santiago sin la nueva estructura de Bike Itaú, al mismo tiempo). Esto se ve mitigado por los controles empíricos agregados al modelo, pero también deberíamos estudiar un contrafactual. Gallego et al. (2013) propone utilizar una pequeña ciudad de Chile como contrafactual debido a sus tendencias similares de CO. Podríamos construir un modelo de Diferencia en Diferencias que nos permitiría controlar los efectos de los factores externos.
+Este trabajo tiene grandes limitaciones, siendo la principal la falta de un contrafactual confiable (Santiago sin la nueva estructura de Bike Itaú, al mismo tiempo). Esto se ve mitigado por los controles empíricos agregados al modelo, pero también deberíamos estudiar un contrafactual. Gallego et al. (2013) propone utilizar una pequeña ciudad de Chile como contrafactual debido a sus tendencias similares de CO. Con eses datos podríamos construir un modelo de Diferencia en Diferencias que nos permitiría controlar los efectos de los factores externos.
 
 Apesar de todo, este proceso empírico robusto y fuertemente apoyado por Gallego et al. (2013), permite ter confiança no sense do impact das variáveis, e é possível afirmar, pelo menos, que o efeito de sistemas de bicicletas partilhadas não contribuem para a diminuição da utilização de carros (em horas de ponta).
 
+## Observaciones y Comentario del Curso
+
+Para este curso, el objetivo era ser capaz de plantear un problema o cuestión de interés personal relacionado con un fenómeno político; y establecer una hipótesis causal. 
+
+Partiendo de una fuerte revisión teórica y literaria, se estudió el impacto que tuvo la implementación, por parte de Muincípio y la empresa Bike Itaú, del nuevo sistema de bicicletas compartidas para los residentes y visitantes de Santiago, con planes mensuales de menos de 4 000 pesos.
+
+La hipótesis inicial era que el uso compartido de bicicletas tiene una débil relación con la reducción del uso del auto. Los resultados fueron aún más sorprendentes al señalar una relación negativa entre la implantación y el uso del auto (evaluado a través de la concentración de CO). Los resultados son significativos y pueden explicarse, por ejemplo, por el menor incentivo para utilizar el transporte público. Sin embargo, es probable que el modelo se vea afectado por factores externos no controlados.
+
+Durante el curso también se enseñaron diversas técnicas de análisis y medición que, debido a la forma en que estaba planteado el problema, no era necesario (ni sería adecuado) ocupar (por ejemplo, variables latentes, clustering, pca y analisis factorial).
+
+Estas técnicas podrían utilizarse en el futuro si se quisiera estudiar la heterogeneidad de los efectos calculados entre sectores demográficos. Para ello, sería necesario cruzar los datos actuales con los demográficos. Aun así, se considera que este trabajo ha logrado alcanzar los objetivos previstos e incluso puede contribuir a la investigación en este ámbito.
+
+
+Gracias a Soledad Araya, profesora del curso, por los conocimientos transmitidos y la apertura mostrada a los alumnos de intercambio.
+
+## Referencias
+
+* Miriam Ricci, 2015. Bike sharing: A review of evidence on impacts and processes of implementation and operation, Research in Transportation Business & Management, Volume 15, Pages 28-38, ISSN 2210-5395, https://doi.org/10.1016/j.rtbm.2015.03.003.
+* F. Gallego, JP. Montero, C.Salas, 2013. The effect of transport policies on car use: Evidence from Latin American cities. Journal of Public Economics 107 (2013) 47–62
 

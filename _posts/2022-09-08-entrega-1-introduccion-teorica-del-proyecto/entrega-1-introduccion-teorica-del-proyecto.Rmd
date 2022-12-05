@@ -59,7 +59,7 @@ Para esto se recorrerá a las seguintes bases de datos:
 * [Instituto Nacional de Estadisticas](https://stat.ine.cl/Index.aspx?DataSetCode=E10000001)
 
 ## Hipotesis
-Mi hipotesis es la siguiente: **La utilización de bicicletas compartidas no tien una relácion débil con la diminuición del uso de auto**
+Mi hipotesis es la siguiente: **La utilización de bicicletas compartidas tien una relácion débil con la diminuición del uso de auto**
 
 Argumentos:
 
