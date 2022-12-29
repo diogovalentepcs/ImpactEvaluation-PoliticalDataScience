@@ -1,12 +1,11 @@
 ---
 title: "Welcome to Blog Datos Politicos"
 description: |
-  Welcome to our new blog, Blog Datos Politicos. We hope you enjoy 
-  reading what we have to say!
+  Welcome to Blog Datos Politicos. Each post contains a new stop of an Ikmpact Evaluation Project done for a Political Data Science Course! The posts are in Spanish and contain all the code.
 author:
   - name: Diogo Polónia
-    url: https://example.com/norajones
-    affiliation: Spacely Sprockets
+    url: https://diogovalentepcs.github.io/website/
+    affiliation: PUC Chile (Exchange Student)
     affiliation_url: https://example.com/spacelysprokets
 date: 08-25-2022
 output:
